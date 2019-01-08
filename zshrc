@@ -194,4 +194,5 @@ fi
 # commands mapping
 alias vim="/usr/local/bin/vim"
 alias cur="pwd|pbcopy"
-alias er="exa --recurse"
+alias ccur="cd $(pbpaste)"
+alias exar="exa --recurse"
