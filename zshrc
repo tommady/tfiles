@@ -154,8 +154,19 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+# make sure brew installed
+if ! [ -x "$(command -v brew)" ]; then
+    xcode-select --install
+    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    brew doctor
+    brew install caskroom/cask/brew-cask
+fi
+
 # psql app into cli
-export PATH=$PATH:/Applications/MySQLWorkbench.app/Contents/MacOS
+if [ -e /Applications/MySQLWorkbench.app/Contents/MacOS ]; then
+    export PATH=$PATH:/Applications/MySQLWorkbench.app/Contents/MacOS
+fi
+
 # GPG sign into cli
 export GPG_TTY=$(tty)
 eval "$(rbenv init -)"
@@ -168,6 +179,11 @@ else
     curl https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/plugins/z/z.sh > ~/z.sh
     chmod 777 ~/z.sh
     . ~/z.sh
+fi
+
+# bat a better cat
+if ! [ -x "$(command -v bat)" ]; then
+    brew install bat
 fi
 
 # commands mapping
