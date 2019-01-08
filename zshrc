@@ -154,8 +154,22 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+# psql app into cli
 export PATH=$PATH:/Applications/MySQLWorkbench.app/Contents/MacOS
+# GPG sign into cli
 export GPG_TTY=$(tty)
 eval "$(rbenv init -)"
+
+# z jump around
+if [ -e ~/z.sh ]
+then
+    . ~/z.sh
+else
+    curl https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/plugins/z/z.sh > ~/z.sh
+    chmod 777 ~/z.sh
+    . ~/z.sh
+fi
+
+# commands mapping
 alias vim="/usr/local/bin/vim"
 alias cur="pwd|pbcopy"
