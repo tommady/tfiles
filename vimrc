@@ -13,12 +13,12 @@ if !isdirectory($HOME . "/.vim/undodir")
   call mkdir($HOME . "/.vim/undodir", "p")
 endif
 
-if empty($HOME . "/.vim/colors/codedark.vim")
+if empty(glob("~/.vim/colors/codedark.vim"))
   silent !curl -fLo ~/.vim/colors/codedark.vim --create-dirs
         \ https://raw.githubusercontent.com/tomasiser/vim-code-dark/master/colors/codedark.vim
 endif
 
-if empty($HOME . "/.vim/autoload/airline/codedark.vim")
+if empty(glob("~/.vim/autoload/airline/codedark.vim"))
   silent !curl -fLo ~/.vim/autoload/airline/codedark.vim --create-dirs
         \ https://raw.githubusercontent.com/tomasiser/vim-code-dark/master/autoload/airline/themes/codedark.vim
 endif
