@@ -186,6 +186,12 @@ if ! [ -x "$(command -v bat)" ]; then
     brew install bat
 fi
 
+# exa a better ls
+if ! [ -x "$(command -v exa)" ]; then
+    brew install exa
+fi
+
 # commands mapping
 alias vim="/usr/local/bin/vim"
 alias cur="pwd|pbcopy"
+alias er="exa --recurse"
