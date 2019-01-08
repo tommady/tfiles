@@ -191,6 +191,16 @@ if ! [ -x "$(command -v exa)" ]; then
     brew install exa
 fi
 
+# fd a better find
+if ! [ -x "$(command -v fd)" ]; then
+    brew install fd
+fi
+
+# rg ripgrep
+if ! [ -x "$(command -v rg)" ]; then
+    brew install ripgrep
+fi
+
 # commands mapping
 alias vim="/usr/local/bin/vim"
 alias cur="pwd|pbcopy"
