@@ -199,6 +199,14 @@ if ! [ -x "$(command -v rg)" ]; then
     brew install ripgrep
 fi
 
+# rust
+if ! [ -x "$(command -v rustup)" ]; then
+    curl https://sh.rustup.rs -sSf | sh
+fi
+
+# rust cargo export
+export PATH="$HOME/.cargo/bin:$PATH"
+
 # commands mapping
 alias vim="/usr/local/bin/vim"
 alias cur="pwd|pbcopy"
