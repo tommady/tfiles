@@ -203,4 +203,6 @@ fi
 alias vim="/usr/local/bin/vim"
 alias cur="pwd|pbcopy"
 alias ccur="cd $(pbpaste)"
-alias exar="exa --recurse"
+alias ear="exa --recurse"
+alias ea="exa"
+

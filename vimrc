@@ -36,6 +36,7 @@ let g:airline_theme = 'codedark'
 set undofile
 set undodir=~/.vim/undodir
 set clipboard=unnamed
+set backspace=indent,eol,start
 
 autocmd InsertEnter * let save_cwd = getcwd() | set autochdir
 autocmd InsertLeave * set noautochdir | execute 'cd' fnameescape(save_cwd)
