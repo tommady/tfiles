@@ -112,6 +112,7 @@ Plug 'hashivim/vim-terraform'
 Plug 'andrewstuart/vim-kubernetes'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'jiangmiao/auto-pairs'
+Plug 'rust-lang/rust.vim'
 
 call plug#end()
 
