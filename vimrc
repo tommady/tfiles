@@ -113,6 +113,7 @@ Plug 'andrewstuart/vim-kubernetes'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'jiangmiao/auto-pairs'
 Plug 'rust-lang/rust.vim'
+Plug 'tpope/vim-surround'
 
 call plug#end()
 
@@ -140,4 +141,7 @@ let g:ycm_python_binary_path = '/usr/bin/python'
 
 " golang config
 let g:go_fmt_command = "goimports"
+
+" rust config
+let g:rustfmt_autosave = 1
 
