@@ -199,6 +199,11 @@ if ! [ -x "$(command -v rg)" ]; then
     brew install ripgrep
 fi
 
+# asciinema
+if ! [ -x "$(command -v asciinema)" ]; then
+    brew install asciinema
+fi
+
 # rust
 if ! [ -x "$(command -v rustup)" ]; then
     curl https://sh.rustup.rs -sSf | sh
@@ -213,4 +218,5 @@ alias cur="pwd|pbcopy"
 alias ccur="cd $(pbpaste)"
 alias ear="exa --recurse"
 alias ea="exa"
+alias asciirec="asciinema rec"
 
