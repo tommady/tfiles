@@ -121,6 +121,7 @@ Plug 'rust-lang/rust.vim'
 Plug 'tpope/vim-surround'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'mhinz/vim-startify'
+Plug 'junegunn/goyo.vim'
 
 call plug#end()
 
