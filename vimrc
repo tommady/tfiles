@@ -121,9 +121,33 @@ Plug 'rust-lang/rust.vim'
 Plug 'tpope/vim-surround'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'mhinz/vim-startify'
+" full screen vim
 Plug 'junegunn/goyo.vim'
+" vim style botton line
+Plug 'itchyny/lightline.vim'
+" light way to display git branch
+Plug 'itchyny/vim-gitbranch'
 
 call plug#end()
+
+" lightline
+set laststatus=2
+set noshowmode
+
+if !has('gui_running')
+  set t_Co=256
+endif
+
+let g:lightline = {
+      \ 'colorscheme': 'wombat',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'gitbranch#name'
+      \ },
+      \ }
 
 " NERDTree
 map <C-n> :NERDTreeTabsToggle<CR>
