@@ -23,6 +23,7 @@ if empty(glob("~/.vim/autoload/airline/codedark.vim"))
         \ https://raw.githubusercontent.com/tomasiser/vim-code-dark/master/autoload/airline/themes/codedark.vim
 endif
 
+
 """ Appearance
 
 syntax on
@@ -127,8 +128,21 @@ Plug 'junegunn/goyo.vim'
 Plug 'itchyny/lightline.vim'
 " light way to display git branch
 Plug 'itchyny/vim-gitbranch'
+Plug 'airblade/vim-gitgutter'
 
 call plug#end()
+
+" gitgutter
+set updatetime=100
+let g:gitgutter_max_signs = 500
+let g:gitgutter_map_keys = 0
+let g:gitgutter_override_sign_column_highlight = 0
+
+if exists('&signcolumn')  " Vim 7.4.2201
+  set signcolumn=yes
+else
+  let g:gitgutter_sign_column_always = 1
+endif
 
 " lightline
 set laststatus=2
