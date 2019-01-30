@@ -212,3 +212,6 @@ let g:ctrlp_custom_ignore = {
   \ 'file': '\v\.(exe|so|dll)$',
   \ 'link': 'some_bad_symbolic_links',
   \ }
+
+" auto pairs
+au FileType rust let b:AutoPairs = AutoPairsDefine({'\w\zs<': '>'})
