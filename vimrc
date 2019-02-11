@@ -129,6 +129,8 @@ Plug 'itchyny/lightline.vim'
 " light way to display git branch
 Plug 'itchyny/vim-gitbranch'
 Plug 'airblade/vim-gitgutter'
+" python autopep8
+Plug 'tell-k/vim-autopep8' 
 
 call plug#end()
 
@@ -200,6 +202,11 @@ let g:go_fmt_command = "goimports"
 
 " rust config
 let g:rustfmt_autosave = 1
+au FileType rust let b:AutoPairs = AutoPairsDefine({'\w\zs<': '>'})
+
+" python config
+let g:autopep8_on_save = 1
+let g:autopep8_disable_show_diff=1
 
 " ctrlp fuzzy finder
 let g:ctrlp_map = '<c-p>'
@@ -213,5 +220,3 @@ let g:ctrlp_custom_ignore = {
   \ 'link': 'some_bad_symbolic_links',
   \ }
 
-" auto pairs
-au FileType rust let b:AutoPairs = AutoPairsDefine({'\w\zs<': '>'})
