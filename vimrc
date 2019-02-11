@@ -220,3 +220,8 @@ let g:ctrlp_custom_ignore = {
   \ 'link': 'some_bad_symbolic_links',
   \ }
 
+" auto pair config
+let g:AutoPairsWildClosedPair = ''
+let g:AutoPairsFlyMode = 0
+let g:AutoPairsMultilineClose = 0
+let g:AutoPairsShortcutBackInsert = '<c-b>'
