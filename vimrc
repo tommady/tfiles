@@ -131,6 +131,9 @@ Plug 'itchyny/vim-gitbranch'
 Plug 'airblade/vim-gitgutter'
 " python autopep8
 Plug 'tell-k/vim-autopep8' 
+" markdown
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
 
 call plug#end()
 
@@ -234,3 +237,7 @@ let g:AutoPairsWildClosedPair = ''
 let g:AutoPairsFlyMode = 0
 let g:AutoPairsMultilineClose = 0
 let g:AutoPairsShortcutBackInsert = '<c-b>'
+
+" markdown config
+let g:vim_markdown_folding_disabled = 1
+let g:vim_markdown_no_default_key_mappings = 1
