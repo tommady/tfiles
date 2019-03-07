@@ -241,3 +241,7 @@ let g:AutoPairsShortcutBackInsert = '<c-b>'
 " markdown config
 let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_no_default_key_mappings = 1
+
+" json format
+au FileType json autocmd BufWritePost *.json execute '%!python -m json.tool' | w
+
