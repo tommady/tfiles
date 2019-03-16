@@ -211,6 +211,7 @@ let g:go_highlight_extra_types = 1
 let g:go_highlight_build_constraints = 1
 let g:go_highlight_generate_tags = 1
 let g:go_gocode_propose_source=0
+let g:go_template_autocreate = 0
 
 " rust config
 let g:rustfmt_autosave = 1
