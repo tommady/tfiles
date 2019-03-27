@@ -134,6 +134,8 @@ Plug 'tell-k/vim-autopep8'
 " markdown
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
+" markdown preview
+Plug 'JamshedVesuna/vim-markdown-preview'
 
 call plug#end()
 
@@ -243,6 +245,12 @@ let g:AutoPairsShortcutBackInsert = '<c-b>'
 " markdown config
 let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_no_default_key_mappings = 1
+
+" markdown preview config
+let vim_markdown_preview_toggle=2
+let vim_markdown_preview_browser='Google Chrome'
+let vim_markdown_preview_temp_file=1
+let vim_markdown_preview_github=1
 
 " json format
 au FileType json autocmd BufWritePost *.json execute '%!python -m json.tool' | w

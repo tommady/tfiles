@@ -212,6 +212,16 @@ fi
 # rust cargo export
 export PATH="$HOME/.cargo/bin:$PATH"
 
+# grip (for GitHub flavoured markdown)
+if ! [ -x "$(command -v grip)" ]; then
+	brew install grip
+fi
+
+# markdown
+if ! [ -x "$(command -v markdown)" ]; then
+	brew install markdown
+fi
+
 # commands mapping
 alias vim="/usr/local/bin/vim"
 alias cur="pwd|pbcopy"
