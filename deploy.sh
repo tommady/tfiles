@@ -1,5 +1,6 @@
 cp ./tmux.conf ~/.tmux.conf
 cp ./vimrc ~/.vimrc
+cp ./nvim ~/.config/nvim/init.vim
 
 if [ -z "$(grep -n 'others' ~/.zshrc | cut -d: -f 1)" ]; then
     cp ./zshrc ~/.zshrc

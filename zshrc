@@ -229,4 +229,5 @@ alias ccur="cd $(pbpaste)"
 alias ear="exa --recurse"
 alias ea="exa"
 alias asciirec="asciinema rec"
+alias nv="nvim"
 
