@@ -88,6 +88,7 @@ Plug 'tpope/vim-commentary'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 " golang auto completion with deoplete
 Plug 'deoplete-plugins/deoplete-go', { 'do': 'make'}
+Plug 'stamblerre/gocode', { 'rtp': 'nvim', 'do': '~/.local/share/nvim/site/plugged/gocode/nvim/symlink.sh' }
 
 call plug#end()
 
@@ -109,6 +110,8 @@ let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 " deoplete config
 let g:deoplete#enable_at_startup = 1
 set completeopt+=noselect
+let g:deoplete#disable_auto_complete = 0 " set to 1 if you want to disable autocomplete
+let g:deoplete#ignore_sources = {}
 
 " deoplete go config
 let g:deoplete#sources#go#gocode_binary = '~/go/bin/gocode'
