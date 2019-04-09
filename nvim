@@ -51,6 +51,8 @@ set smartcase
 set hlsearch!
 set wildmode=longest,list,full
 set completeopt=longest,menuone
+set exrc
+set secure
 
 call plug#begin("~/.local/share/nvim/site/plugged")
 filetype plugin indent on
