@@ -54,6 +54,14 @@ set completeopt=longest,menuone
 set exrc
 set secure
 
+" each language using different tab settings
+" ts = 'number of spaces that <Tab> in file uses' 
+" sts = 'number of spaces that <Tab> uses while editing' 
+" sw = 'number of spaces to use for (auto)indent step'
+autocmd FileType go setlocal ts=8 sts=8 sw=8
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+autocmd FileType py setlocal ts=4 sts=4 sw=4 expandtab
+
 call plug#begin("~/.local/share/nvim/site/plugged")
 filetype plugin indent on
 
