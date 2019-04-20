@@ -66,9 +66,6 @@ au FocusGained,BufEnter * :silent! !
 " rid of it. See https://gist.github.com/mislav/5189704#comment-951447
 au FocusLost * :redraw!
 
-" Clear CtrlP cache when coming back to vim and after writing a file.
-au FocusGained,BufWritePost * :CtrlPClearCache
-
 " each language using different tab settings
 " ts = 'number of spaces that <Tab> in file uses' 
 " sts = 'number of spaces that <Tab> uses while editing' 
@@ -92,7 +89,6 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'jiangmiao/auto-pairs'
 Plug 'rust-lang/rust.vim'
 Plug 'tpope/vim-surround'
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'ervandew/supertab'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
@@ -260,3 +256,6 @@ let vim_markdown_preview_github=1
 
 " json format
 au FileType json autocmd BufWritePost *.json execute '%!python -m json.tool' | w
+
+" fzf
+set rtp+=/usr/local/opt/fzf

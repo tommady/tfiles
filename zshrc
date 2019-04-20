@@ -222,6 +222,17 @@ if ! [ -x "$(command -v markdown)" ]; then
 	brew install markdown
 fi
 
+if ! [ -x "$(command -v fzf)" ]; then
+	brew install fzf
+	$(brew --prefix)/opt/fzf/install
+fi
+
+# enable fzf
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border --layout=reverse --inline-info'
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
 # commands mapping
 alias vim="/usr/local/bin/vim"
 alias cur="pwd|pbcopy"
@@ -230,4 +241,3 @@ alias ear="exa --recurse"
 alias ea="exa"
 alias asciirec="asciinema rec"
 alias nv="nvim"
-
