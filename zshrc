@@ -222,6 +222,7 @@ if ! [ -x "$(command -v markdown)" ]; then
 	brew install markdown
 fi
 
+# fzf
 if ! [ -x "$(command -v fzf)" ]; then
 	brew install fzf
 	$(brew --prefix)/opt/fzf/install

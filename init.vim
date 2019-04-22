@@ -111,6 +111,11 @@ Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 " golang auto completion with deoplete
 Plug 'deoplete-plugins/deoplete-go', { 'do': 'make'}
 Plug 'stamblerre/gocode', { 'rtp': 'nvim', 'do': '~/.local/share/nvim/site/plugged/gocode/nvim/symlink.sh' }
+" Adds file type glyphs/icons to popular
+Plug 'ryanoasis/vim-devicons'
+" fzf
+Plug '/usr/local/opt/fzf'
+Plug 'junegunn/fzf.vim'
 
 call plug#end()
 
@@ -257,5 +262,3 @@ let vim_markdown_preview_github=1
 " json format
 au FileType json autocmd BufWritePost *.json execute '%!python -m json.tool' | w
 
-" fzf
-set rtp+=/usr/local/opt/fzf
