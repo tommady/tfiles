@@ -137,6 +137,7 @@ source $ZSH/oh-my-zsh.sh
 # else
 #   export EDITOR='mvim'
 # fi
+export EDITOR='nvim'
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -227,12 +228,59 @@ if ! [ -x "$(command -v fzf)" ]; then
 	brew install fzf
 	$(brew --prefix)/opt/fzf/install
 fi
-
-# enable fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# fzf zsh config
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border --layout=reverse --inline-info'
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_CTRL_T_OPTS="--preview 'bat --color=always --line-range :500 {}'"
+export FZF_ALT_C_COMMAND="fd --type d . --color=never"
+export FZF_ALT_C_OPTS="--preview 'exa --tree --all --color=always --color-scale {}'"
+
+fzf_find_edit() {
+    local file=$(
+      fzf --no-multi --preview 'bat --color=always --line-range :500 {}'
+      )
+    if [[ -n $file ]]; then
+        $EDITOR $file
+    fi
+}
+
+alias ffe='fzf_find_edit'
+
+fzf_grep_edit(){
+    if [[ $# == 0 ]]; then
+        echo 'Error: search term was not provided.'
+        return
+    fi
+    local match=$(
+      rg --color=never --line-number "$1" |
+        fzf --no-multi --delimiter : \
+            --preview "bat --color=always --line-range {2}: {1}"
+      )
+    local file=$(echo "$match" | cut -d':' -f1)
+    if [[ -n $file ]]; then
+        $EDITOR $file +$(echo "$match" | cut -d':' -f2)
+    fi
+}
+
+alias fge='fzf_grep_edit'
+
+fzf_git_log() {
+    local commits=$(
+      git log --graph --format="%C(yellow)%h%C(red)%d%C(reset) - %C(bold green)(%ar)%C(reset) %s %C(blue)<%an>%C(reset)" --color=always "$@" |
+        fzf --ansi --no-sort --height 100% \
+            --preview "echo {} | grep -o '[a-f0-9]\{7\}' | head -1 |
+                       xargs -I@ sh -c 'git show --color=always @'"
+      )
+    if [[ -n $commits ]]; then
+        local hashes=$(printf "$commits" | cut -d' ' -f2 | tr '\n' ' ')
+        git show $hashes
+    fi
+}
+
+alias glog='fzf_git_log'
 
 # commands mapping
 alias vim="/usr/local/bin/vim"

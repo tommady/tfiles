@@ -265,3 +265,5 @@ let vim_markdown_preview_github=1
 " json format
 au FileType json autocmd BufWritePost *.json execute '%!python -m json.tool' | w
 
+" fzf config
+
