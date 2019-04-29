@@ -128,8 +128,10 @@ Plug 'deoplete-plugins/deoplete-go', { 'do': 'make'}
 Plug 'stamblerre/gocode', { 'rtp': 'nvim', 'do': '~/.local/share/nvim/site/plugged/gocode/nvim/symlink.sh' }
 " Adds file type glyphs/icons to popular
 Plug 'ryanoasis/vim-devicons'
+" tags
+Plug 'ludovicchabant/vim-gutentags'
 " fzf
-Plug '/usr/local/opt/fzf'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --no-bash' }
 Plug 'junegunn/fzf.vim'
 
 call plug#end()
@@ -234,7 +236,7 @@ let g:go_highlight_operators = 1
 let g:go_highlight_extra_types = 1
 let g:go_highlight_build_constraints = 1
 let g:go_highlight_generate_tags = 1
-let g:go_gocode_propose_source=0
+let g:go_gocode_propose_source = 0
 let g:go_template_autocreate = 0
 let g:go_def_mode = 'godef'
 
@@ -265,5 +267,19 @@ let vim_markdown_preview_github=1
 " json format
 au FileType json autocmd BufWritePost *.json execute '%!python -m json.tool' | w
 
+" gutentags config
+let g:gutentags_project_root = ['.root', '.svn', '.git', '.project']
+let g:gutentags_ctags_tagfile = '.tags'
+let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
+let s:vim_tags = expand('~/.cache/tags')
+let g:gutentags_cache_dir = s:vim_tags
+if !isdirectory(s:vim_tags)
+   silent! call mkdir(s:vim_tags, 'p')
+endif
+
 " fzf config
+let g:fzf_layout = { 'down': '~40%' }
+let g:fzf_buffers_jump = 1
+nnoremap <silent> <c-p> :Files<CR>
+nnoremap <silent> <c-]> :call fzf#nvim#tags(expand('cword'))<CR>
 
