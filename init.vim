@@ -278,8 +278,18 @@ if !isdirectory(s:vim_tags)
 endif
 
 " fzf config
+let g:fzf_command_prefix = 'Fzf'
 let g:fzf_layout = { 'down': '~40%' }
 let g:fzf_buffers_jump = 1
-nnoremap <silent> <c-p> :Files<CR>
-nnoremap <silent> <c-]> :call fzf#nvim#tags(expand('cword'))<CR>
-
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
+  \   <bang>0 ? fzf#vim#with_preview('up:60%')
+  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \   <bang>0)
+" [Tags] Command to generate tags file
+let g:fzf_tags_command = 'ctags -R'
+nnoremap <silent> <c-p> :FzfFiles<CR>
+nnoremap <silent> <c-g> :FzfBTags<CR>
+nnoremap <silent> <c-G> :FzfTags<CR>
+nnoremap <silent> <c-r> :FzfRg<CR> 
