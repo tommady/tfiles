@@ -223,6 +223,18 @@ if ! [ -x "$(command -v markdown)" ]; then
 	brew install markdown
 fi
 
+# zsh-syntax-highlighting
+if ! [ -e /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
+	brew install zsh-syntax-highlighting
+fi
+source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# zsh-autosuggestions
+if ! [ -e /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh ] ; then
+	brew install zsh-autosuggestions
+fi
+source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
 # ctags
 if ! [ -x "$(command -v ctags)" ]; then
 	brew install --HEAD universal-ctags/universal-ctags/universal-ctags
