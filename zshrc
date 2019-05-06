@@ -154,6 +154,12 @@ export EDITOR='nvim'
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+# Vi mode
+bindkey -v
+
+# the font i like
+# brew cask install font-sourcecodepro-nerd-font
+
 # make sure brew installed
 if ! [ -x "$(command -v brew)" ]; then
     xcode-select --install
