@@ -162,6 +162,14 @@ if ! [ -x "$(command -v brew)" ]; then
     brew install caskroom/cask/brew-cask
 fi
 
+# install nvim and change default python to version 3
+if ! [ -x "$(command -v nvim)" ]; then
+	unlink /usr/local/bin/python
+	ln -s /usr/local/bin/python3 /usr/local/bin/python
+	pip3 install neovim --upgrade
+	brew install neovim/neovim/neovim
+fi
+
 # psql app into cli
 if [ -e /Applications/MySQLWorkbench.app/Contents/MacOS ]; then
     export PATH=$PATH:/Applications/MySQLWorkbench.app/Contents/MacOS
