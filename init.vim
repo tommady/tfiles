@@ -24,14 +24,24 @@ if !isdirectory($HOME . "/.local/share/nvim/site/undodir")
   call mkdir($HOME . "/.local/share/nvim/site/undodir", "p")
 endif
 
-if empty(glob("~/.local/share/nvim/site/colors/codedark.vim"))
-  silent !curl -fLo ~/.local/share/nvim/site/colors/codedark.vim --create-dirs
-        \ https://raw.githubusercontent.com/tomasiser/vim-code-dark/master/colors/codedark.vim
+" if empty(glob("~/.local/share/nvim/site/colors/codedark.vim"))
+"   silent !curl -fLo ~/.local/share/nvim/site/colors/codedark.vim --create-dirs
+"         \ https://raw.githubusercontent.com/tomasiser/vim-code-dark/master/colors/codedark.vim
+" endif
+
+" if empty(glob("~/.local/share/nvim/site/autoload/airline/codedark.vim"))
+"   silent !curl -fLo ~/.local/share/nvim/site/autoload/airline/codedark.vim --create-dirs
+"         \ https://raw.githubusercontent.com/tomasiser/vim-code-dark/master/autoload/airline/themes/codedark.vim
+" endif
+
+if empty(glob("~/.local/share/nvim/site/colors/one.vim"))
+  silent !curl -fLo ~/.local/share/nvim/site/colors/one.vim --create-dirs
+  	\ https://raw.githubusercontent.com/rakr/vim-one/master/colors/one.vim
 endif
 
-if empty(glob("~/.local/share/nvim/site/autoload/airline/codedark.vim"))
-  silent !curl -fLo ~/.local/share/nvim/site/autoload/airline/codedark.vim --create-dirs
-        \ https://raw.githubusercontent.com/tomasiser/vim-code-dark/master/autoload/airline/themes/codedark.vim
+if empty(glob("~/.local/share/nvim/site/autoload/airline/one.vim"))
+  silent !curl -fLo ~/.local/share/nvim/site/autoload/airline/one.vim --create-dirs
+  	\ https://raw.githubusercontent.com/rakr/vim-one/master/autoload/airline/themes/one.vim
 endif
 
 " Pared with .tmux.conf config for navigation in tmux and vim
@@ -49,8 +59,15 @@ nnoremap <silent> <c-j> :call TmuxMove('j')<cr>
 nnoremap <silent> <c-k> :call TmuxMove('k')<cr>
 nnoremap <silent> <c-l> :call TmuxMove('l')<cr>
 
-colorscheme codedark
-let g:airline_theme = 'codedark'
+" theme settings
+" colorscheme codedark
+" let g:airline_theme = 'codedark'
+colorscheme one
+let g:airline_theme='one'
+set background=dark
+let g:one_allow_italics = 1
+
+
 syntax on
 set number relativenumber
 set nowrap
@@ -69,6 +86,7 @@ set completeopt=longest,menuone
 set exrc
 set secure
 set autoread
+set termguicolors
 
 " Save whenever switching windows or leaving vim. This is useful when running
 " the tests inside vim without having to save all files first.
