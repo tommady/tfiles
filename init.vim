@@ -24,26 +24,6 @@ if !isdirectory($HOME . "/.local/share/nvim/site/undodir")
   call mkdir($HOME . "/.local/share/nvim/site/undodir", "p")
 endif
 
-" if empty(glob("~/.local/share/nvim/site/colors/codedark.vim"))
-"   silent !curl -fLo ~/.local/share/nvim/site/colors/codedark.vim --create-dirs
-"         \ https://raw.githubusercontent.com/tomasiser/vim-code-dark/master/colors/codedark.vim
-" endif
-
-" if empty(glob("~/.local/share/nvim/site/autoload/airline/codedark.vim"))
-"   silent !curl -fLo ~/.local/share/nvim/site/autoload/airline/codedark.vim --create-dirs
-"         \ https://raw.githubusercontent.com/tomasiser/vim-code-dark/master/autoload/airline/themes/codedark.vim
-" endif
-
-if empty(glob("~/.local/share/nvim/site/colors/one.vim"))
-  silent !curl -fLo ~/.local/share/nvim/site/colors/one.vim --create-dirs
-  	\ https://raw.githubusercontent.com/rakr/vim-one/master/colors/one.vim
-endif
-
-if empty(glob("~/.local/share/nvim/site/autoload/airline/one.vim"))
-  silent !curl -fLo ~/.local/share/nvim/site/autoload/airline/one.vim --create-dirs
-  	\ https://raw.githubusercontent.com/rakr/vim-one/master/autoload/airline/themes/one.vim
-endif
-
 " Pared with .tmux.conf config for navigation in tmux and vim
 function! TmuxMove(direction)
   let wnr = winnr()
@@ -59,14 +39,27 @@ nnoremap <silent> <c-j> :call TmuxMove('j')<cr>
 nnoremap <silent> <c-k> :call TmuxMove('k')<cr>
 nnoremap <silent> <c-l> :call TmuxMove('l')<cr>
 
+"Use 24-bit (true-color) mode in Vim/Neovim when outside tmux.
+"If you're using tmux version 2.2 or later, you can remove the outermost $TMUX check and use tmux's 24-bit color support
+"(see < http://sunaku.github.io/tmux-24bit-color.html#usage > for more information.)
+if (empty($TMUX))
+  if (has("nvim"))
+  "For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
+  let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+  endif
+  "For Neovim > 0.1.5 and Vim > patch 7.4.1799 < https://github.com/vim/vim/commit/61be73bb0f965a895bfb064ea3e55476ac175162 >
+  "Based on Vim patch 7.4.1770 (`guicolors` option) < https://github.com/vim/vim/commit/8a633e3427b47286869aa4b96f2bfc1fe65b25cd >
+  " < https://github.com/neovim/neovim/wiki/Following-HEAD#20160511 >
+  if (has("termguicolors"))
+    set termguicolors
+  endif
+endif
+
 " theme settings
-" colorscheme codedark
-" let g:airline_theme = 'codedark'
 colorscheme one
 let g:airline_theme='one'
 set background=dark
 let g:one_allow_italics = 1
-
 
 syntax on
 set number relativenumber
@@ -86,7 +79,6 @@ set completeopt=longest,menuone
 set exrc
 set secure
 set autoread
-set termguicolors
 
 " Save whenever switching windows or leaving vim. This is useful when running
 " the tests inside vim without having to save all files first.
@@ -110,12 +102,13 @@ autocmd FileType py setlocal ts=4 sts=4 sw=4 expandtab
 autocmd FileType html setlocal ts=4 sts=4 sw=4 expandtab
 autocmd FileType css setlocal ts=4 sts=4 sw=4 expandtab
 autocmd FileType javascript setlocal ts=4 sts=4 sw=4 expandtab
+autocmd FileType proto setlocal ts=2 sts=2 sw=2 expandtab
+autocmd FileType markdown setlocal ts=4 sts=4 sw=4
 
 call plug#begin("~/.local/share/nvim/site/plugged")
 filetype plugin indent on
 
 Plug 'tpope/vim-sensible'
-Plug 'neomake/neomake'
 Plug 'scrooloose/nerdtree'                                           " File tree browser
 Plug 'jistr/vim-nerdtree-tabs'                                       " NerdTree independent of tabs
 Plug 'Xuyuanp/nerdtree-git-plugin'                                   " NerdTree git plugin
@@ -123,6 +116,7 @@ Plug 'hashivim/vim-terraform'
 Plug 'andrewstuart/vim-kubernetes'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'jiangmiao/auto-pairs'
+" rust lang
 Plug 'rust-lang/rust.vim'
 Plug 'tpope/vim-surround'
 Plug 'ervandew/supertab'
@@ -133,13 +127,11 @@ Plug 'itchyny/lightline.vim'
 " light way to display git branch
 Plug 'itchyny/vim-gitbranch'
 Plug 'airblade/vim-gitgutter'
-" python autopep8
-Plug 'tell-k/vim-autopep8' 
 " markdown
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 " markdown preview
-Plug 'JamshedVesuna/vim-markdown-preview'
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 " comment out in visual mode
 Plug 'tpope/vim-commentary'
 " dark power completion
@@ -147,6 +139,8 @@ Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 " golang auto completion with deoplete
 Plug 'deoplete-plugins/deoplete-go', { 'do': 'make'}
 Plug 'stamblerre/gocode', { 'rtp': 'nvim', 'do': '~/.local/share/nvim/site/plugged/gocode/nvim/symlink.sh' }
+" rust auto completion with deoplete
+Plug 'sebastianmarkow/deoplete-rust'
 " Adds file type glyphs/icons to popular
 Plug 'ryanoasis/vim-devicons'
 " tags
@@ -154,6 +148,10 @@ Plug 'ludovicchabant/vim-gutentags'
 " fzf
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --no-bash' }
 Plug 'junegunn/fzf.vim'
+" ale better neomake
+Plug 'w0rp/ale'
+" vim-one theme
+Plug 'rakr/vim-one'
 
 call plug#end()
 
@@ -179,21 +177,43 @@ let g:deoplete#disable_auto_complete = 0 " set to 1 if you want to disable autoc
 let g:deoplete#ignore_sources = {}
 
 " deoplete go config
-let g:deoplete#sources#go#gocode_binary = '~/go/bin/gocode'
+let g:deoplete#sources#go#gocode_binary = '${GOPATH}/bin/gocode'
 let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
 
-" neomake config
-" Run NeoMake on read and write operations
-autocmd! BufReadPost,BufWritePost * Neomake
+" deoplete rust config
+let g:deoplete#sources#rust#racer_binary = '~/.cargo/bin/racer'
+let g:deoplete#sources#rust#rust_source_path = '`rustc --print sysroot`/lib/rustlib/src/rust/src'
+let g:deoplete#sources#rust#disable_keymap = 1
 
-" Disable inherited syntastic
-let g:syntastic_mode_map = {
-  \ "mode": "passive",
-  \ "active_filetypes": [],
-  \ "passive_filetypes": [] }
+" ale config
+" Error and warning signs.
+let g:ale_sign_column_always = 1
+let g:ale_sign_error = '✖' 
+let g:ale_sign_warning = '∆'
+let g:airline#extensions#ale#enabled = 1
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_fix_on_save = 1
+let g:ale_open_list = 'on_save'
+augroup CloseLoclistWindowGroup
+  autocmd!
+  autocmd QuitPre * if empty(&buftype) | lclose | endif
+augroup END
+let g:ale_linters = {
+    \ 'go': ['golangci-lint', 'golint'],
+    \ 'rust': ['rls', 'cargo', 'rustc']
+    \ }
+let g:ale_fixers = {
+    \ 'go': ['goimports'],
+    \ 'rust': ['rustfmt']
+    \ }
 
-let g:neomake_serialize = 1
-let g:neomake_serialize_abort_on_error = 1
+" ale golang
+let g:ale_go_golangci_lint_options = ""
+let g:ale_go_golangci_lint_package = 1
+
+" ale rust
+let g:ale_rust_cargo_check_tests = 1
+let g:ale_rust_cargo_check_examples = 1
 
 " gitgutter
 set updatetime=100
@@ -210,7 +230,6 @@ endif
 " lightline
 set laststatus=2
 set noshowmode
-
 if !has('gui_running')
   set t_Co=256
 endif
@@ -246,9 +265,10 @@ let g:NERDTreeDirArrowCollapsible = '└'
 let g:NERDTreeMapActivateNode = '<tab>'
 set mouse=a
 
-" vim go config
+" vim-go config
 let g:go_fmt_command = "goimports"
-let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
+let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck', 'varcheck', 'deadcode', 'staticcheck', 'unused']
+let g:syntastic_go_checkers = ['golangci_lint', 'golint', 'govet', 'errcheck']
 let g:go_highlight_types = 1
 let g:go_highlight_fields = 1
 let g:go_highlight_functions = 1
@@ -259,15 +279,22 @@ let g:go_highlight_build_constraints = 1
 let g:go_highlight_generate_tags = 1
 let g:go_gocode_propose_source = 0
 let g:go_template_autocreate = 0
-let g:go_def_mode = 'godef'
+let g:go_def_mode='gopls'
+let g:go_info_mode='gopls'
+let g:go_def_mapping_enabled = 0
+let g:go_fmt_fail_silently = 1
+let g:go_term_enabled = 1
+let g:go_auto_sameids = 1
+" omnifunc set to vim-go if deoplete enable
+" call deoplete#custom#option('omni_patterns', { 'go': '[^. *\t]\.\w*' })
+au FileType go silent nmap <C-]> :GoDef<cr>
+au FileType go silent nmap <C-i> :GoInfo<cr>
 
 " rust config
 let g:rustfmt_autosave = 1
 au FileType rust let b:AutoPairs = AutoPairsDefine({'\w\zs<': '>'})
-
-" python config
-let g:autopep8_on_save = 1
-let g:autopep8_disable_show_diff=1
+au FileType rust silent nmap <C-]> :ALEGoToDefinition<cr>
+au FileType rust silent nmap <C-i> :ALEHover<cr>
 
 " auto pair config
 let g:AutoPairsWildClosedPair = ''
@@ -280,15 +307,25 @@ let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_no_default_key_mappings = 1
 
 " markdown preview config
-let vim_markdown_preview_toggle=1
-let vim_markdown_preview_browser='Google Chrome'
-let vim_markdown_preview_temp_file=1
-let vim_markdown_preview_github=1
+let g:mkdp_page_title = '${name}'
+let g:mkdp_preview_options = {
+    \ 'mkit': {},
+    \ 'katex': {},
+    \ 'uml': {},
+    \ 'maid': {},
+    \ 'disable_sync_scroll': 0,
+    \ 'sync_scroll_type': 'middle',
+    \ 'hide_yaml_meta': 1,
+    \ 'sequence_diagrams': {'theme': 'simple'}
+    \ }
 
 " json format
 au FileType json autocmd BufWritePost *.json execute '%!python -m json.tool' | w
 
 " gutentags config
+au FileType gitcommit,gitrebase let g:gutentags_enabled=0
+let g:gutentags_trace = 0 
+let g:gutentags_exclude_filetypes=['gitcommit', 'gitrebase']
 let g:gutentags_project_root = ['.root', '.svn', '.git', '.project']
 let g:gutentags_ctags_tagfile = '.tags'
 let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
