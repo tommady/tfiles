@@ -161,6 +161,11 @@ if ! [ -x "$(command -v rg)" ]; then
     brew install ripgrep
 fi
 
+# sd better sed
+if ! [ -x "$(command -v sd)" ]; then
+	brew install sd
+fi
+
 # asciinema
 if ! [ -x "$(command -v asciinema)" ]; then
     brew install asciinema
@@ -220,7 +225,8 @@ export FZF_CTRL_T_OPTS="--preview 'bat --color=always --line-range :500 {}'"
 export FZF_ALT_C_COMMAND="fd --type d . --color=never"
 export FZF_ALT_C_OPTS="--preview 'exa --tree --all --color=always --color-scale {}'"
 
-fzf_find_edit() {
+# ffe find the file then edit
+ffe() {
     local file=$(
       fzf --no-multi --preview 'bat --color=always --line-range :500 {}'
       )
@@ -229,9 +235,8 @@ fzf_find_edit() {
     fi
 }
 
-alias ffe='fzf_find_edit'
-
-fzf_grep_edit(){
+# fge - find the content in files
+fge(){
     if [[ $# == 0 ]]; then
         echo 'Error: search term was not provided.'
         return
@@ -247,22 +252,21 @@ fzf_grep_edit(){
     fi
 }
 
-alias fge='fzf_grep_edit'
-
-fzf_git_log() {
-    local commits=$(
-      git log --graph --format="%C(yellow)%h%C(red)%d%C(reset) - %C(bold green)(%ar)%C(reset) %s %C(blue)<%an>%C(reset)" --color=always "$@" |
-        fzf --ansi --no-sort --height 100% \
-            --preview "echo {} | grep -o '[a-f0-9]\{7\}' | head -1 |
-                       xargs -I@ sh -c 'git show --color=always @'"
-      )
-    if [[ -n $commits ]]; then
-        local hashes=$(printf "$commits" | cut -d' ' -f2 | tr '\n' ' ')
-        git show $hashes
-    fi
+# fco - checkout git branch/tag
+fco() {
+  local tags branches target
+  branches=$(
+    git --no-pager branch --all \
+      --format="%(if)%(HEAD)%(then)%(else)%(if:equals=HEAD)%(refname:strip=3)%(then)%(else)%1B[0;34;1mbranch%09%1B[m%(refname:short)%(end)%(end)" \
+    | sed '/^$/d') || return
+  tags=$(
+    git --no-pager tag | awk '{print "\x1b[35;1mtag\x1b[m\t" $1}') || return
+  target=$(
+    (echo "$branches"; echo "$tags") |
+    fzf --no-hscroll --no-multi -n 2 \
+        --ansi) || return
+  git checkout $(awk '{print $2}' <<<"$target" )
 }
-
-alias glog='fzf_git_log'
 
 # commands mapping
 alias vim="/usr/local/bin/vim"
