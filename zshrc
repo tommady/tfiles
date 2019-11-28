@@ -277,3 +277,5 @@ alias ea="exa"
 alias asciirec="asciinema rec"
 alias nv="nvim"
 
+if [ "$TMUX" = "" ]; then tmux; fi
+
