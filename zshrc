@@ -206,7 +206,7 @@ if ! [ -x "$(command -v ctags)" ]; then
 	brew install --HEAD universal-ctags/universal-ctags/universal-ctags
 fi
 
-if ! [ -x "$(command -v p10k)" ]; then
+if ! [ -e $ZSH_CUSTOM/themes/powerlevel10k ]; then
 	git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
 fi
 
