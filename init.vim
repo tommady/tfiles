@@ -104,6 +104,8 @@ autocmd FileType css setlocal ts=4 sts=4 sw=4 expandtab
 autocmd FileType javascript setlocal ts=4 sts=4 sw=4 expandtab
 autocmd FileType proto setlocal ts=2 sts=2 sw=2 expandtab
 autocmd FileType markdown setlocal ts=4 sts=4 sw=4
+autocmd FileType sh setlocal ts=2 sts=2 sw=2 expandtab
+autocmd FileType make setlocal ts=2 sts=2 sw=2 expandtab
 
 call plug#begin("~/.local/share/nvim/site/plugged")
 filetype plugin indent on
@@ -193,7 +195,7 @@ let g:ale_sign_warning = '∆'
 let g:airline#extensions#ale#enabled = 1
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_fix_on_save = 1
-let g:ale_open_list = 'on_save'
+let g:ale_open_list = 0 
 augroup CloseLoclistWindowGroup
   autocmd!
   autocmd QuitPre * if empty(&buftype) | lclose | endif
