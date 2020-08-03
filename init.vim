@@ -111,9 +111,6 @@ call plug#begin("~/.local/share/nvim/site/plugged")
 filetype plugin indent on
 
 Plug 'tpope/vim-sensible'
-Plug 'scrooloose/nerdtree'                                           " File tree browser
-Plug 'jistr/vim-nerdtree-tabs'                                       " NerdTree independent of tabs
-Plug 'Xuyuanp/nerdtree-git-plugin'                                   " NerdTree git plugin
 Plug 'hashivim/vim-terraform'
 Plug 'andrewstuart/vim-kubernetes'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
@@ -151,35 +148,44 @@ Plug 'ludovicchabant/vim-gutentags'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --no-bash' }
 Plug 'junegunn/fzf.vim'
 " ale better neomake
-Plug 'w0rp/ale'
+Plug 'dense-analysis/ale'
 " vim-one theme
 Plug 'rakr/vim-one'
+" multi cursor ctrl d
+Plug 'terryma/vim-multiple-cursors'
 
 call plug#end()
 
-" ultisnips config
-let g:UltiSnipsExpandTrigger = "<nop>"
-let g:ulti_expand_or_jump_res = 0
-function ExpandSnippetOrCarriageReturn()
-    let snippet = UltiSnips#ExpandSnippetOrJump()
-    if g:ulti_expand_or_jump_res > 0
-        return snippet
-    else
-        return "\<CR>"
-    endif
-endfunction
-inoremap <expr> <CR> pumvisible() ? "<C-R>=ExpandSnippetOrCarriageReturn()<CR>" : "\<CR>"
-let g:UltiSnipsJumpForwardTrigger="<c-j>"
-let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+" vim-multiple-cursors
+" doing this for more easy to checkback
+let g:multi_cursor_use_default_mapping=0
+
+" Default mapping
+let g:multi_cursor_start_word_key      = '<C-n>'
+let g:multi_cursor_select_all_word_key = '<A-n>'
+let g:multi_cursor_start_key           = 'g<C-n>'
+let g:multi_cursor_select_all_key      = 'g<A-n>'
+let g:multi_cursor_next_key            = '<C-n>'
+let g:multi_cursor_prev_key            = '<C-P>'
+let g:multi_cursor_skip_key            = '<C-x>'
+let g:multi_cursor_quit_key            = '<Esc>'
 
 " deoplete config
 let g:deoplete#enable_at_startup = 1
 set completeopt+=noselect
 let g:deoplete#disable_auto_complete = 0 " set to 1 if you want to disable autocomplete
-let g:deoplete#ignore_sources = {}
+let g:deoplete#max_processes = 2
+let s:go_pattern = '[^. *\t]\.\w*'
+call deoplete#custom#source('_', 'max_menu_width', 80)
+call deoplete#custom#option(
+    \ 'ignore_sources', {'_':[ 'around', 'buffer' ]},
+    \ 'omni_patterns', {
+    \ 'go': s:go_pattern,
+    \ }
+    \ )
 
 " deoplete go config
-let g:deoplete#sources#go#gocode_binary = '${GOPATH}/bin/gocode'
+let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
 let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
 
 " deoplete rust config
@@ -194,19 +200,23 @@ let g:ale_sign_error = '✖'
 let g:ale_sign_warning = '∆'
 let g:airline#extensions#ale#enabled = 1
 let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_insert_leave = 0
 let g:ale_fix_on_save = 1
 let g:ale_open_list = 0 
+let g:ale_completion_enabled = 1
 augroup CloseLoclistWindowGroup
   autocmd!
   autocmd QuitPre * if empty(&buftype) | lclose | endif
 augroup END
 let g:ale_linters = {
     \ 'go': ['golangci-lint', 'golint'],
-    \ 'rust': ['rls', 'cargo', 'rustc']
+    \ 'rust': ['cargo', 'rls'],
+    \ 'python': ['flake8', 'pylint']
     \ }
 let g:ale_fixers = {
     \ 'go': ['goimports'],
-    \ 'rust': ['rustfmt']
+    \ 'rust': ['rustfmt'],
+    \ 'python': ['yapf']
     \ }
 
 " ale golang
@@ -256,16 +266,6 @@ function! LightlineFilename()
   endif
   return expand('%')
 endfunction
-
-" NERDTree
-map <C-n> :NERDTreeTabsToggle<CR>
-map <C-f> :NERDTreeFind<CR>
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-let NERDTreeChDirMode=2
-let g:NERDTreeDirArrowExpandable = '├'
-let g:NERDTreeDirArrowCollapsible = '└'
-let g:NERDTreeMapActivateNode = '<tab>'
-set mouse=a
 
 " vim-go config
 let g:go_fmt_command = "goimports"
@@ -347,6 +347,7 @@ command! -bang -nargs=* Rg
   \   <bang>0 ? fzf#vim#with_preview('up:60%')
   \           : fzf#vim#with_preview('right:50%:hidden', '?'),
   \   <bang>0)
+
 " [Tags] Command to generate tags file
 let g:fzf_tags_command = 'ctags -R'
 nnoremap <silent> <c-p> :FzfFiles<CR>

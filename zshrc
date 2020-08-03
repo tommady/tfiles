@@ -3,6 +3,8 @@
 
 # Path to your oh-my-zsh installation.
 export ZSH=~/.oh-my-zsh
+# Path using by homebrew
+export PATH="/usr/local/sbin:$PATH"
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
@@ -77,6 +79,7 @@ source $ZSH/oh-my-zsh.sh
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
+export LC_CTYPE=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
@@ -102,7 +105,7 @@ export EDITOR='nvim'
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 # Vi mode
-bindkey -v
+# bindkey -v
 
 # the font i like
 # brew cask install font-sourcecodepro-nerd-font
