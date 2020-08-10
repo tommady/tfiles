@@ -145,8 +145,7 @@ Plug 'ryanoasis/vim-devicons'
 " tags
 Plug 'ludovicchabant/vim-gutentags'
 " fzf
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --no-bash' }
-Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 " ale better neomake
 Plug 'dense-analysis/ale'
 " vim-one theme

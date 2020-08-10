@@ -68,6 +68,8 @@ export TERM="xterm-256color"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
   git
+  zsh-autosuggestions
+  zsh-syntax-highlighting
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -110,68 +112,36 @@ export EDITOR='nvim'
 # the font i like
 # brew cask install font-sourcecodepro-nerd-font
 
-# make sure brew installed
-if ! [ -x "$(command -v brew)" ]; then
-    xcode-select --install
-    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-    brew doctor
-    brew install caskroom/cask/brew-cask
+# make sure brew installed in macOS
+if [[ "$(uname)" == "Darwin" ]]; then
+    if ! [ -x "$(command -v brew)" ]; then
+        xcode-select --install
+        ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+        brew doctor
+        brew install caskroom/cask/brew-cask
+    fi
 fi
 
-# install nvim and change default python to version 3
-if ! [ -x "$(command -v nvim)" ]; then
-	unlink /usr/local/bin/python
-	ln -s /usr/local/bin/python3 /usr/local/bin/python
-	pip3 install neovim --upgrade
-	brew install neovim/neovim/neovim
+# install nvim 
+if [[ "$(uname)" == "Darwin" ]]; then
+    if ! [ -x "$(command -v nvim)" ]; then
+    	unlink /usr/local/bin/python
+    	ln -s /usr/local/bin/python3 /usr/local/bin/python
+    	pip3 install neovim --upgrade
+    	brew install neovim/neovim/neovim
+    fi
+elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
+    if ! [ -x "$(command -v nvim)" ]; then
+        sudo apt install neovim
+        sudo apt install python3-neovim
+    fi
 fi
 
 # psql app into cli
-if [ -e /Applications/MySQLWorkbench.app/Contents/MacOS ]; then
-    export PATH=$PATH:/Applications/MySQLWorkbench.app/Contents/MacOS
-fi
-
-# GPG sign into cli
-export GPG_TTY=$(tty)
-
-# z jump around
-if [ -e ~/z.sh ]
-then
-    . ~/z.sh
-else
-    curl https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/plugins/z/z.sh > ~/z.sh
-    chmod 777 ~/z.sh
-    . ~/z.sh
-fi
-
-# bat a better cat
-if ! [ -x "$(command -v bat)" ]; then
-    brew install bat
-fi
-
-# exa a better ls
-if ! [ -x "$(command -v exa)" ]; then
-    brew install exa
-fi
-
-# fd a better find
-if ! [ -x "$(command -v fd)" ]; then
-    brew install fd
-fi
-
-# rg ripgrep
-if ! [ -x "$(command -v rg)" ]; then
-    brew install ripgrep
-fi
-
-# sd better sed
-if ! [ -x "$(command -v sd)" ]; then
-	brew install sd
-fi
-
-# asciinema
-if ! [ -x "$(command -v asciinema)" ]; then
-    brew install asciinema
+if [[ "$(uname)" == "Darwin" ]]; then
+    if [ -e /Applications/MySQLWorkbench.app/Contents/MacOS ]; then
+        export PATH=$PATH:/Applications/MySQLWorkbench.app/Contents/MacOS
+    fi
 fi
 
 # rust
@@ -182,42 +152,209 @@ fi
 # rust cargo export
 export PATH="$HOME/.cargo/bin:$PATH"
 
-# grip (for GitHub flavoured markdown)
-if ! [ -x "$(command -v grip)" ]; then
-	brew install grip
+# GPG sign into cli
+export GPG_TTY=$(tty)
+
+if [[ "$(uname)" == "Darwin" ]]; then
+    # bat a better cat
+    if ! [ -x "$(command -v bat)" ]; then
+        brew install bat
+    fi
+
+    # exa a better ls
+    if ! [ -x "$(command -v exa)" ]; then
+        brew install exa
+    fi
+    
+    # fd a better find
+    if ! [ -x "$(command -v fd)" ]; then
+        brew install fd
+    fi
+    
+    # rg ripgrep
+    if ! [ -x "$(command -v rg)" ]; then
+        brew install ripgrep
+    fi
+    
+    # sd better sed
+    if ! [ -x "$(command -v sd)" ]; then
+    	brew install sd
+    fi
+    
+    # asciinema
+    if ! [ -x "$(command -v asciinema)" ]; then
+        brew install asciinema
+    fi
+    
+    # grip (for GitHub flavoured markdown)
+    if ! [ -x "$(command -v grip)" ]; then
+    	brew install grip
+    fi
+    
+    # markdown
+    if ! [ -x "$(command -v markdown)" ]; then
+    	brew install markdown
+    fi
+    
+    # zsh-syntax-highlighting
+    if ! [ -e /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
+    	brew install zsh-syntax-highlighting
+    fi
+    source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+    
+    # zsh-autosuggestions
+    if ! [ -e /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh ] ; then
+    	brew install zsh-autosuggestions
+    fi
+    source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+    
+    # ctags
+    if ! [ -x "$(command -v ctags)" ]; then
+    	brew install --HEAD universal-ctags/universal-ctags/universal-ctags
+    fi
+    
+    if ! [ -e $ZSH_CUSTOM/themes/powerlevel10k ]; then
+    	git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
+    fi
+    
+    # fzf
+    if ! [ -x "$(command -v fzf)" ]; then
+    	brew install fzf
+    	$(brew --prefix)/opt/fzf/install
+    fi
+
+elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
+
+    # jq (this one needs to be install first, since the rest of tools are counting on it)
+    if ! [ -x "$(command -v jq)" ]; then
+	pushd /tmp/
+	curl -s https://api.github.com/repos/stedolan/jq/releases/latest \
+	| grep "browser_download_url.*jq-linux64" \
+	| cut -d ":" -f 2,3 \
+	| tr -d \" \
+	| wget -qi -
+	
+	chmod +x jq-linux64	
+	sudo mv jq-linux64 /usr/local/bin/jq
+	popd
+
+	location="$(which jq)"
+	version="$(jq --version)"
+	echo "jq binary location: $location and version: $version"
+    fi
+
+    # bat a better cat
+    if ! [ -x "$(command -v bat)" ]; then
+	pushd /tmp/
+	curl -s https://api.github.com/repos/sharkdp/bat/releases/latest \
+	| jq -r '.assets[] | select(.name | contains("x86_64-unknown-linux-gnu.tar.gz")) | .browser_download_url' \
+	| wget -i -
+	
+	tarball="$(find . -name "bat-*-x86_64-unknown-linux-gnu.tar.gz")"
+	folball="bat_folder"
+	mkdir $folball && tar -xzf $tarball -C $folball --strip-components 1
+	chmod +x $folball/bat
+	sudo mv $folball/bat /usr/local/bin/bat
+	popd
+
+	location="$(which bat)"
+	version="$(bat --version)"
+	echo "bat binary location: $location and version: $version"
+    fi
+
+    # exa a better ls
+    if ! [ -x "$(command -v exa)" ]; then
+        pushd /tmp/
+	curl -s https://api.github.com/repos/ogham/exa/releases/latest \
+	| jq -r '.assets[] | select(.name | contains("linux-x86_64")) | .browser_download_url' \
+	| wget -i -
+	
+	tarball="$(find . -name "*-linux-x86_64-*")"
+	folball="bat_folder"
+	unzip -p $tarball > exa 
+	chmod +x exa
+	sudo mv exa /usr/local/bin/exa
+	popd
+
+	location="$(which exa)"
+	version="$(exa --version)"
+	echo "exa binary location: $location and version: $version"
+    fi
+    
+    # fd a better find
+    if ! [ -x "$(command -v fd)" ]; then
+	pushd /tmp/
+	curl -s https://api.github.com/repos/sharkdp/fd/releases/latest \
+	| jq -r '.assets[] | select(.name | contains("-x86_64-unknown-linux-gnu.tar.gz")) | .browser_download_url' \
+	| wget -i -
+	
+	tarball="$(find . -name "fd-*-x86_64-unknown-linux-gnu.tar.gz")"
+	folball="fd_folder"
+	mkdir $folball && tar -xzf $tarball -C $folball --strip-components 1
+	chmod +x $folball/fd
+	sudo mv $folball/fd /usr/local/bin/fd
+	popd
+
+	location="$(which fd)"
+	version="$(fd --version)"
+	echo "fd binary location: $location and version: $version"
+    fi
+    
+    # rg ripgrep
+    if ! [ -x "$(command -v rg)" ]; then
+	pushd /tmp/
+	curl -s https://api.github.com/repos/BurntSushi/ripgrep/releases/latest \
+	| jq -r '.assets[] | select(.name | contains("-x86_64-unknown-linux-musl.tar.gz")) | .browser_download_url' \
+	| wget -i -
+	
+	tarball="$(find . -name "ripgrep-*-x86_64-unknown-linux-musl.tar.gz")"
+	folball="rg_folder"
+	mkdir $folball && tar -xzf $tarball -C $folball --strip-components 1
+	chmod +x $folball/rg
+	sudo mv $folball/rg /usr/local/bin/rg
+	popd
+
+	location="$(which rg)"
+	version="$(rg --version)"
+	echo "rg binary location: $location and version: $version"
+    fi
+    
+    # sd better sed
+    if ! [ -x "$(command -v sd)" ]; then
+	pushd /tmp/
+	curl -s https://api.github.com/repos/chmln/sd/releases/latest \
+	| jq -r '.assets[] | select(.name | contains("-x86_64-unknown-linux-gnu")) | .browser_download_url' \
+	| wget -i -
+	
+	tarball="$(find . -name "sd-*-x86_64-unknown-linux-gnu")"
+	chmod +x $tarball
+	sudo mv $tarball /usr/local/bin/sd
+	popd
+
+	location="$(which sd)"
+	version="$(sd --version)"
+	echo "sd binary location: $location and version: $version"
+    fi
+
+     
+
+    # zsh-syntax-highlighting
+    if ! [ -e ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting ]; then
+	git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+    fi
+    
+    # zsh-autosuggestions
+    if ! [ -e ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions ] ; then
+	git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+    fi
+
+    # fzf
+    if ! [ -x "$(command -v fzf)" ]; then
+	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+	~/.fzf/install
+    fi
 fi
 
-# markdown
-if ! [ -x "$(command -v markdown)" ]; then
-	brew install markdown
-fi
-
-# zsh-syntax-highlighting
-if ! [ -e /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
-	brew install zsh-syntax-highlighting
-fi
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-# zsh-autosuggestions
-if ! [ -e /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh ] ; then
-	brew install zsh-autosuggestions
-fi
-source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-
-# ctags
-if ! [ -x "$(command -v ctags)" ]; then
-	brew install --HEAD universal-ctags/universal-ctags/universal-ctags
-fi
-
-if ! [ -e $ZSH_CUSTOM/themes/powerlevel10k ]; then
-	git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
-fi
-
-# fzf
-if ! [ -x "$(command -v fzf)" ]; then
-	brew install fzf
-	$(brew --prefix)/opt/fzf/install
-fi
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # fzf zsh config
@@ -272,9 +409,6 @@ fco() {
 }
 
 # commands mapping
-alias vim="/usr/local/bin/vim"
-alias cur="pwd|pbcopy"
-alias ccur="cd $(pbpaste)"
 alias ear="exa --recurse"
 alias ea="exa"
 alias asciirec="asciinema rec"
