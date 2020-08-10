@@ -73,6 +73,7 @@ set completeopt=longest,menuone
 set exrc
 set secure
 set autoread
+set rtp+=~/.fzf
 
 " Save whenever switching windows or leaving vim. This is useful when running
 " the tests inside vim without having to save all files first.
@@ -140,6 +141,7 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'ludovicchabant/vim-gutentags'
 " fzf
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 " ale better neomake
 Plug 'dense-analysis/ale'
 " vim-one theme
