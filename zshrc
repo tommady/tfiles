@@ -23,6 +23,8 @@ export TERM="xterm-256color"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
+# To use fzf in zsh
+[[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -365,14 +367,11 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
     fi
 
     # fzf
-    [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
     if ! [ -x "$(command -v fzf)" ]; then
 	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 	~/.fzf/install
     fi
 fi
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # fzf zsh config
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border --layout=reverse --inline-info'
