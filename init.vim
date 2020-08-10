@@ -55,12 +55,6 @@ if (has("termguicolors"))
 endif
 " endif
 
-" theme settings
-colorscheme one
-let g:airline_theme='one'
-set background=dark
-let g:one_allow_italics = 1
-
 syntax on
 set number relativenumber
 set nowrap
@@ -154,6 +148,12 @@ Plug 'rakr/vim-one'
 Plug 'terryma/vim-multiple-cursors'
 
 call plug#end()
+
+" theme settings
+colorscheme one
+let g:airline_theme='one'
+set background=dark
+let g:one_allow_italics = 1
 
 " vim-multiple-cursors
 " doing this for more easy to checkback

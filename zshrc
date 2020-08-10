@@ -336,8 +336,6 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 	echo "sd binary location: $location and version: $version"
     fi
 
-     
-
     # zsh-syntax-highlighting
     if ! [ -e ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting ]; then
 	git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
@@ -349,6 +347,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
     fi
 
     # fzf
+    [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
     if ! [ -x "$(command -v fzf)" ]; then
 	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 	~/.fzf/install
