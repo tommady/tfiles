@@ -225,6 +225,24 @@ if [[ "$(uname)" == "Darwin" ]]; then
 
 elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 
+    # ctags
+    if ! [ -x "$(command -v ctags)" ]; then
+	sudo apt install automake autoconf pkg-config make build-essential
+	pushd /tmp/
+	git clone https://github.com/universal-ctags/ctags.git
+	pushd ctags
+	./autogen.sh
+	./configure
+	make
+	sudo make install
+	popd
+	popd
+
+	location="$(which ctags)"
+	version="$(ctags --version)"
+	echo "ctags binary location: $location and version: $version"
+    fi
+
     # jq (this one needs to be install first, since the rest of tools are counting on it)
     if ! [ -x "$(command -v jq)" ]; then
 	pushd /tmp/
