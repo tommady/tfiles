@@ -130,9 +130,6 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 Plug 'tpope/vim-commentary'
 " dark power completion
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-" golang auto completion with deoplete
-Plug 'deoplete-plugins/deoplete-go', { 'do': 'make'}
-Plug 'stamblerre/gocode', { 'rtp': 'nvim', 'do': '~/.local/share/nvim/site/plugged/gocode/nvim/symlink.sh' }
 " rust auto completion with deoplete
 Plug 'sebastianmarkow/deoplete-rust'
 " Adds file type glyphs/icons to popular
@@ -186,8 +183,7 @@ call deoplete#custom#option(
     \ )
 
 " deoplete go config
-let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
-let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
+let g:deoplete#complete_method = "omnifunc"
 
 " deoplete rust config
 let g:deoplete#sources#rust#racer_binary = '~/.cargo/bin/racer'
@@ -204,7 +200,6 @@ let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 0
 let g:ale_fix_on_save = 1
 let g:ale_open_list = 0 
-let g:ale_completion_enabled = 1
 augroup CloseLoclistWindowGroup
   autocmd!
   autocmd QuitPre * if empty(&buftype) | lclose | endif
