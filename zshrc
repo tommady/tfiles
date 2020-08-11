@@ -290,7 +290,6 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 	| wget -i -
 	
 	tarball="$(find . -name "*-linux-x86_64-*")"
-	folball="bat_folder"
 	unzip -p $tarball > exa 
 	chmod +x exa
 	sudo mv exa /usr/local/bin/exa
@@ -370,6 +369,24 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
     if ! [ -x "$(command -v fzf)" ]; then
 	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 	~/.fzf/install
+    fi
+
+    # procs: https://github.com/dalance/procs
+    if ! [ -x "$(command -v procs)" ]; then
+    	pushd /tmp/
+	curl -s https://api.github.com/repos/dalance/procs/releases/latest \
+	| jq -r '.assets[] | select(.name | contains("-x86_64-lnx.zip")) | .browser_download_url' \
+	| wget -i -
+	
+	tarball="$(find . -name "procs-*-x86_64-lnx.zip")"
+	unzip -p $tarball > procs 
+	chmod +x procs
+	sudo mv procs /usr/local/bin/procs
+	popd
+
+	location="$(which procs)"
+	version="$(procs --version)"
+	echo "procs binary location: $location and version: $version"
     fi
 fi
 
