@@ -21,11 +21,6 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 
 export TERM="xterm-256color"
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
-# To use fzf in zsh
-[[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
-
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
 
@@ -397,6 +392,7 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_CTRL_T_OPTS="--preview 'bat --color=always --line-range :500 {}'"
 export FZF_ALT_C_COMMAND="fd --type d . --color=never"
 export FZF_ALT_C_OPTS="--preview 'exa --tree --all --color=always --color-scale {}'"
+bindkey "ç" fzf-cd-widget
 
 # ffe find the file then edit
 ffe() {
@@ -447,5 +443,7 @@ alias ea="exa"
 alias asciirec="asciinema rec"
 alias nv="nvim"
 
-# if [ "$TMUX" = "" ]; then tmux; fi
-
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
+# To use fzf in zsh
+[[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
