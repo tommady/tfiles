@@ -383,6 +383,20 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 	version="$(procs --version)"
 	echo "procs binary location: $location and version: $version"
     fi
+
+    # kubectl 
+    if ! [ -x "$(command -v kubectl)" ]; then
+    	pushd /tmp/
+	curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
+	
+	chmod +x kubectl
+	sudo mv kubectl /usr/local/bin/kubectl
+	popd
+
+	location="$(which kubectl)"
+	version="$(kubectl version --client)"
+	echo "kubectl binary location: $location and version: $version"
+    fi
 fi
 
 # fzf zsh config
