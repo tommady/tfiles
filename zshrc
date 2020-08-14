@@ -109,6 +109,11 @@ export EDITOR='nvim'
 # the font i like
 # brew cask install font-sourcecodepro-nerd-font
 
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
+# To use fzf in zsh
+[[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
+
 # make sure brew installed in macOS
 if [[ "$(uname)" == "Darwin" ]]; then
     if ! [ -x "$(command -v brew)" ]; then
@@ -145,12 +150,6 @@ fi
 if ! [ -x "$(command -v rustup)" ]; then
     curl https://sh.rustup.rs -sSf | sh
 fi
-
-# rust cargo export
-export PATH="$HOME/.cargo/bin:$PATH"
-
-# GPG sign into cli
-export GPG_TTY=$(tty)
 
 if [[ "$(uname)" == "Darwin" ]]; then
     # bat a better cat
@@ -408,56 +407,15 @@ export FZF_ALT_C_COMMAND="fd --type d . --color=never"
 export FZF_ALT_C_OPTS="--preview 'exa --tree --all --color=always --color-scale {}'"
 bindkey "ç" fzf-cd-widget
 
-# ffe find the file then edit
-ffe() {
-    local file=$(
-      fzf --no-multi --preview 'bat --color=always --line-range :500 {}'
-      )
-    if [[ -n $file ]]; then
-        $EDITOR $file
-    fi
-}
-
-# fge - find the content in files
-fge(){
-    if [[ $# == 0 ]]; then
-        echo 'Error: search term was not provided.'
-        return
-    fi
-    local match=$(
-      rg --color=never --line-number "$1" |
-        fzf --no-multi --delimiter : \
-            --preview "bat --color=always --line-range {2}: {1}"
-      )
-    local file=$(echo "$match" | cut -d':' -f1)
-    if [[ -n $file ]]; then
-        $EDITOR $file +$(echo "$match" | cut -d':' -f2)
-    fi
-}
-
-# fco - checkout git branch/tag
-fco() {
-  local tags branches target
-  branches=$(
-    git --no-pager branch --all \
-      --format="%(if)%(HEAD)%(then)%(else)%(if:equals=HEAD)%(refname:strip=3)%(then)%(else)%1B[0;34;1mbranch%09%1B[m%(refname:short)%(end)%(end)" \
-    | sed '/^$/d') || return
-  tags=$(
-    git --no-pager tag | awk '{print "\x1b[35;1mtag\x1b[m\t" $1}') || return
-  target=$(
-    (echo "$branches"; echo "$tags") |
-    fzf --no-hscroll --no-multi -n 2 \
-        --ansi) || return
-  git checkout $(awk '{print $2}' <<<"$target" )
-}
-
 # commands mapping
 alias ear="exa --recurse"
 alias ea="exa"
 alias asciirec="asciinema rec"
 alias nv="nvim"
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
-# To use fzf in zsh
-[[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
+# rust cargo export
+export PATH="$HOME/.cargo/bin:$PATH"
+
+# GPG sign into cli
+export GPG_TTY=$(tty)
+
