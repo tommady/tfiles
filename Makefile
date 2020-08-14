@@ -1,6 +1,6 @@
 SHELL:=/bin/bash
 .ONESHELL:
-.PHONY: deploy_tmux deploy_nvim deploy_alacritty deploy_p10k deploy_zshrc
+.PHONY: all
 
 all: deploy_tmux deploy_nvim deploy_alacritty deploy_p10k deploy_zshrc
 
