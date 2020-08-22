@@ -396,6 +396,20 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 	version="$(kubectl version --client)"
 	echo "kubectl binary location: $location and version: $version"
     fi
+
+    # minio client 
+    if ! [ -x "$(command -v mc)" ]; then
+    	pushd /tmp/
+	curl -LO "https://dl.min.io/client/mc/release/linux-amd64/mc"
+	
+	chmod +x mc
+	sudo mv mc /usr/local/bin/mc
+	popd
+
+	location="$(which mc)"
+	version="$(mc --version)"
+	echo "mc binary location: $location and version: $version"
+    fi
 fi
 
 # fzf zsh config
