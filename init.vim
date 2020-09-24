@@ -145,6 +145,8 @@ Plug 'dense-analysis/ale'
 Plug 'rakr/vim-one'
 " multi cursor ctrl d
 Plug 'terryma/vim-multiple-cursors'
+" toml syntax
+Plug 'cespare/vim-toml'
 
 call plug#end()
 
