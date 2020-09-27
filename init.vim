@@ -320,7 +320,7 @@ let g:mkdp_preview_options = {
     \ }
 
 " json format
-au FileType json autocmd BufWritePost *.json execute '%!python -m json.tool' | w
+au FileType json autocmd BufWritePost *.json execute '%!python3 -m json.tool' | w
 
 " gutentags config
 au FileType gitcommit,gitrebase let g:gutentags_enabled=0
