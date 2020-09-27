@@ -2,7 +2,7 @@ SHELL:=/bin/bash
 .ONESHELL:
 .PHONY: all
 
-all: deploy_tmux deploy_nvim deploy_alacritty deploy_p10k deploy_zshrc
+all: deploy_tmux deploy_nvim deploy_p10k deploy_zshrc
 
 deploy_tmux:
 	cp ./tmux.conf ~/.tmux.conf
