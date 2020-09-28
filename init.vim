@@ -208,7 +208,7 @@ augroup CloseLoclistWindowGroup
 augroup END
 let g:ale_linters = {
     \ 'go': ['golangci-lint', 'golint'],
-    \ 'rust': ['cargo', 'rls'],
+    \ 'rust': ['cargo', 'rls', 'analyzer'],
     \ 'python': ['flake8', 'pylint']
     \ }
 let g:ale_fixers = {
@@ -224,6 +224,7 @@ let g:ale_go_golangci_lint_package = 1
 " ale rust
 let g:ale_rust_cargo_check_tests = 1
 let g:ale_rust_cargo_check_examples = 1
+let g:ale_rust_rls_toolchain = 'stable'
 
 " gitgutter
 set updatetime=100

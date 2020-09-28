@@ -149,6 +149,7 @@ fi
 # rust
 if ! [ -x "$(command -v rustup)" ]; then
     curl https://sh.rustup.rs -sSf | sh
+    rustup component add rls-preview rust-analysis rust-src --toolchain stable
 fi
 
 if [[ "$(uname)" == "Darwin" ]]; then
