@@ -146,6 +146,19 @@ if [[ "$(uname)" == "Darwin" ]]; then
     fi
 fi
 
+# podman
+if [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
+    if ! [ -x "$(command -v podman)" ]; then
+	echo "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_${VERSION_ID}/ /" | sudo tee /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list
+	curl -L https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_${VERSION_ID}/Release.key | sudo apt-key add -
+	sudo apt-get update
+	sudo apt-get -y upgrade 
+	sudo apt-get -y install podman
+	# for https://github.com/multiarch/qemu-user-static/
+        sudo podman run --rm --privileged multiarch/qemu-user-static --reset -p yes
+    fi
+fi
+
 # rust
 if ! [ -x "$(command -v rustup)" ]; then
     curl https://sh.rustup.rs -sSf | sh
