@@ -424,6 +424,25 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 	version="$(mc --version)"
 	echo "mc binary location: $location and version: $version"
     fi
+    
+    # just https://github.com/casey/just 
+    if ! [ -x "$(command -v just)" ]; then
+	pushd /tmp/
+	curl -s https://api.github.com/repos/casey/just/releases/latest \
+	| jq -r '.assets[] | select(.name | contains("-x86_64-unknown-linux-musl.tar.gz")) | .browser_download_url' \
+	| wget -i -
+	
+	tarball="$(find . -name "just-*-x86_64-unknown-linux-musl.tar.gz")"
+	folball="jsut_folder"
+	mkdir $folball && tar -xzf $tarball -C $folball --strip-components 1
+	chmod +x $folball/just
+	sudo mv $folball/just /usr/local/bin/just
+	popd
+
+	location="$(which just)"
+	version="$(just --version)"
+	echo "just binary location: $location and version: $version"
+    fi
 fi
 
 # fzf zsh config
