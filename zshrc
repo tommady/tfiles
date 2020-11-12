@@ -433,8 +433,8 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 	| wget -i -
 	
 	tarball="$(find . -name "just-*-x86_64-unknown-linux-musl.tar.gz")"
-	folball="jsut_folder"
-	mkdir $folball && tar -xzf $tarball -C $folball --strip-components 1
+	folball="just_folder"
+	mkdir $folball && tar -xzf $tarball -C $folball
 	chmod +x $folball/just
 	sudo mv $folball/just /usr/local/bin/just
 	popd
