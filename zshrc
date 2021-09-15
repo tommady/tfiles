@@ -235,24 +235,6 @@ if [[ "$(uname)" == "Darwin" ]]; then
 
 elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 
-    # ctags
-    if ! [ -x "$(command -v ctags)" ]; then
-	sudo apt install automake autoconf pkg-config make build-essential
-	pushd /tmp/
-	git clone https://github.com/universal-ctags/ctags.git
-	pushd ctags
-	./autogen.sh
-	./configure
-	make
-	sudo make install
-	popd
-	popd
-
-	location="$(which ctags)"
-	version="$(ctags --version)"
-	echo "ctags binary location: $location and version: $version"
-    fi
-
     # jq (this one needs to be install first, since the rest of tools are counting on it)
     if ! [ -x "$(command -v jq)" ]; then
 	pushd /tmp/
@@ -443,6 +425,22 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 	version="$(just --version)"
 	echo "just binary location: $location and version: $version"
     fi
+
+    # nvim
+    if ! [ -f "/usr/local/bin/nvim.appimage" ]; then
+	pushd /tmp/
+	curl -s https://api.github.com/repos/neovim/neovim/releases/latest \
+	| jq -r '.assets[] | select(.name | contains("nvim.appimage.") | not ) | select(.name | contains("nvim.appimage")) | .browser_download_url' \
+	| wget -i -
+	
+	chmod +x nvim.appimage
+	sudo mv nvim.appimage /usr/local/bin/nvim
+	popd
+
+	location="$(which nvim)"
+	version="$(nvim --version)"
+	echo "neovim binary location: $location and version: $version"
+    fi
 fi
 
 # fzf zsh config
@@ -462,6 +460,12 @@ alias nv="nvim"
 
 # rust cargo export
 export PATH="$HOME/.cargo/bin:$PATH"
+
+# golang export
+export PATH=$PATH:/usr/local/go/bin
+
+# local bin export
+export PATH="$HOME/.local/bin:$PATH"
 
 # GPG sign into cli
 export GPG_TTY=$(tty)
