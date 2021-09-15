@@ -276,13 +276,14 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
     if ! [ -x "$(command -v exa)" ]; then
         pushd /tmp/
 	curl -s https://api.github.com/repos/ogham/exa/releases/latest \
-	| jq -r '.assets[] | select(.name | contains("linux-x86_64")) | .browser_download_url' \
+	| jq -r '.assets[] | select(.name | contains("linux-x86_64-musl")) | .browser_download_url' \
 	| wget -i -
 	
-	tarball="$(find . -name "*-linux-x86_64-*")"
-	unzip -p $tarball > exa 
-	chmod +x exa
-	sudo mv exa /usr/local/bin/exa
+	tarball="$(find . -name "exa-linux-x86_64-musl-*")"
+	folball="exa_folder"
+	mkdir $folball && unzip -qq $tarball -d $folball
+	chmod +x $folball/bin/exa
+	sudo mv $folball/bin/exa /usr/local/bin/exa
 	popd
 
 	location="$(which exa)"
