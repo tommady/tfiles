@@ -428,7 +428,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
     fi
 
     # nvim
-    if ! [ -f "/usr/local/bin/nvim.appimage" ]; then
+    if ! [ -f "/usr/local/bin/nvim" ]; then
 	pushd /tmp/
 	curl -s https://api.github.com/repos/neovim/neovim/releases/latest \
 	| jq -r '.assets[] | select(.name | contains("nvim.appimage.") | not ) | select(.name | contains("nvim.appimage")) | .browser_download_url' \
