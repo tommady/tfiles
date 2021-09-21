@@ -216,6 +216,9 @@ if [[ "$(uname)" == "Darwin" ]]; then
     fi
 
 elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
+    MARKER='\033[0;31m'
+    NC='\033[0m' # No Color
+    # echo -e "I ${MARKER}love${NC} Stack Overflow"
 
     # jq (this one needs to be install first, since the rest of tools are counting on it)
     if ! [ -x "$(command -v jq)" ]; then
@@ -232,7 +235,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 
 	location="$(which jq)"
 	version="$(jq --version)"
-	echo "jq binary location: $location and version: $version"
+	echo -e "${MARKER}jq binary location: $location and version: $version${NC}"
     fi
 
     # bat a better cat
@@ -251,7 +254,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 
 	location="$(which bat)"
 	version="$(bat --version)"
-	echo "bat binary location: $location and version: $version"
+	echo -e "${MARKER}bat binary location: $location and version: $version${NC}"
     fi
 
     # exa a better ls
@@ -270,7 +273,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 
 	location="$(which exa)"
 	version="$(exa --version)"
-	echo "exa binary location: $location and version: $version"
+	echo -e "${MARKER}exa binary location: $location and version: $version${NC}"
     fi
     
     # fd a better find
@@ -289,7 +292,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 
 	location="$(which fd)"
 	version="$(fd --version)"
-	echo "fd binary location: $location and version: $version"
+	echo "${MARKER}fd binary location: $location and version: $version${NC}"
     fi
     
     # rg ripgrep
@@ -308,7 +311,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 
 	location="$(which rg)"
 	version="$(rg --version)"
-	echo "rg binary location: $location and version: $version"
+	echo "${MARKER}rg binary location: $location and version: $version${NC}"
     fi
     
     # sd better sed
@@ -325,7 +328,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 
 	location="$(which sd)"
 	version="$(sd --version)"
-	echo "sd binary location: $location and version: $version"
+	echo "${MARKER}sd binary location: $location and version: $version${NC}"
     fi
 
     # zsh-syntax-highlighting
@@ -359,7 +362,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 
 	location="$(which procs)"
 	version="$(procs --version)"
-	echo "procs binary location: $location and version: $version"
+	echo "${MARKER}procs binary location: $location and version: $version${NC}"
     fi
 
     # kubectl 
@@ -373,7 +376,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 
 	location="$(which kubectl)"
 	version="$(kubectl version --client)"
-	echo "kubectl binary location: $location and version: $version"
+	echo "${MARKER}kubectl binary location: $location and version: $version${NC}"
     fi
 
     # minio client 
@@ -387,7 +390,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 
 	location="$(which mc)"
 	version="$(mc --version)"
-	echo "mc binary location: $location and version: $version"
+	echo "${MARKER}mc binary location: $location and version: $version${NC}"
     fi
     
     # just https://github.com/casey/just 
@@ -406,7 +409,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 
 	location="$(which just)"
 	version="$(just --version)"
-	echo "just binary location: $location and version: $version"
+	echo "${MARKER}just binary location: $location and version: $version${NC}"
     fi
 
     # nvim
@@ -422,7 +425,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 
 	location="$(which nvim)"
 	version="$(nvim --version)"
-	echo "neovim binary location: $location and version: $version"
+	echo "${MARKER}neovim binary location: $location and version: $version${NC}"
     fi
 
     # podman
@@ -436,7 +439,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 
 	location="$(which podman)"
 	version="$(podman --version)"
-	echo "podman binary location: $location and version: $version"
+	echo "${MARKER}podman binary location: $location and version: $version${NC}"
     fi
 fi
 
