@@ -132,30 +132,12 @@ if [[ "$(uname)" == "Darwin" ]]; then
     	pip3 install neovim --upgrade
     	brew install neovim/neovim/neovim
     fi
-elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
-    if ! [ -x "$(command -v nvim)" ]; then
-        sudo apt install neovim
-        sudo apt install python3-neovim
-    fi
 fi
 
 # psql app into cli
 if [[ "$(uname)" == "Darwin" ]]; then
     if [ -e /Applications/MySQLWorkbench.app/Contents/MacOS ]; then
         export PATH=$PATH:/Applications/MySQLWorkbench.app/Contents/MacOS
-    fi
-fi
-
-# podman
-if [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
-    if ! [ -x "$(command -v podman)" ]; then
-	echo "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_${VERSION_ID}/ /" | sudo tee /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list
-	curl -L https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_${VERSION_ID}/Release.key | sudo apt-key add -
-	sudo apt-get update
-	sudo apt-get -y upgrade 
-	sudo apt-get -y install podman
-	# for https://github.com/multiarch/qemu-user-static/
-        sudo podman run --rm --privileged multiarch/qemu-user-static --reset -p yes
     fi
 fi
 
@@ -441,6 +423,20 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 	location="$(which nvim)"
 	version="$(nvim --version)"
 	echo "neovim binary location: $location and version: $version"
+    fi
+
+    # podman
+    if ! [ -x "$(command -v podman)" ]; then
+	echo "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_${VERSION_ID}/ /" | sudo tee /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list
+	curl -L https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_${VERSION_ID}/Release.key | sudo apt-key add -
+	sudo apt-get update
+	sudo apt-get -y install podman
+	# for https://github.com/multiarch/qemu-user-static/
+        sudo podman run --rm --privileged multiarch/qemu-user-static --reset -p yes
+
+	location="$(which podman)"
+	version="$(podman --version)"
+	echo "podman binary location: $location and version: $version"
     fi
 fi
 
