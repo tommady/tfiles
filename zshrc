@@ -216,7 +216,7 @@ if [[ "$(uname)" == "Darwin" ]]; then
     fi
 
 elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
-    INFOER='\033[0;37m'
+    INFOER='\033[1;36m'
     MARKER='\033[1;32m'
     NC='\033[0m' # No Color
     # echo -e "I ${MARKER}love${NC} Stack Overflow"
@@ -230,11 +230,11 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 	| grep "browser_download_url.*jq-linux64" \
 	| cut -d ":" -f 2,3 \
 	| tr -d \" \
-	| wget -qi - > /dev/null
+	| wget -qi -
 	
 	chmod +x jq-linux64
 	sudo mv jq-linux64 /usr/local/bin/jq
-	popd
+	popd > /dev/null
 
 	location="$(which jq)"
 	version="$(jq --version)"
@@ -248,7 +248,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 	pushd /tmp/ > /dev/null
 	curl -s https://api.github.com/repos/sharkdp/bat/releases/latest \
 	| jq -r '.assets[] | select(.name | contains("x86_64-unknown-linux-gnu.tar.gz")) | .browser_download_url' \
-	| wget -i - > /dev/null
+	| wget -qi -
 	
 	tarball="$(find . -name "bat-*-x86_64-unknown-linux-gnu.tar.gz")"
 	folball="bat_folder"
@@ -257,7 +257,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 	sudo mv $folball/bat /usr/local/bin/bat
 	sudo rm $tarball
 	sudo rm -rf $folball
-	popd
+	popd > /dev/null
 
 	location="$(which bat)"
 	version="$(bat --version)"
@@ -271,7 +271,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
         pushd /tmp/ > /dev/null
 	curl -s https://api.github.com/repos/ogham/exa/releases/latest \
 	| jq -r '.assets[] | select(.name | contains("linux-x86_64-musl")) | .browser_download_url' \
-	| wget -i - > /dev/null
+	| wget -qi -
 	
 	tarball="$(find . -name "exa-linux-x86_64-musl-*")"
 	folball="exa_folder"
@@ -280,7 +280,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 	sudo mv $folball/bin/exa /usr/local/bin/exa
 	sudo rm $tarball
 	sudo rm -rf $folball
-	popd
+	popd > /dev/null
 
 	location="$(which exa)"
 	version="$(exa --version)"
@@ -294,7 +294,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 	pushd /tmp/ > /dev/null
 	curl -s https://api.github.com/repos/sharkdp/fd/releases/latest \
 	| jq -r '.assets[] | select(.name | contains("-x86_64-unknown-linux-gnu.tar.gz")) | .browser_download_url' \
-	| wget -i - > /dev/null
+	| wget -qi -
 	
 	tarball="$(find . -name "fd-*-x86_64-unknown-linux-gnu.tar.gz")"
 	folball="fd_folder"
@@ -303,7 +303,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 	sudo mv $folball/fd /usr/local/bin/fd
 	sudo rm $tarball
 	sudo rm -rf $folball
-	popd
+	popd > /dev/null
 
 	location="$(which fd)"
 	version="$(fd --version)"
@@ -317,7 +317,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 	pushd /tmp/ > /dev/null
 	curl -s https://api.github.com/repos/BurntSushi/ripgrep/releases/latest \
 	| jq -r '.assets[] | select(.name | contains("-x86_64-unknown-linux-musl.tar.gz")) | .browser_download_url' \
-	| wget -i - > /dev/null
+	| wget -qi -
 	
 	tarball="$(find . -name "ripgrep-*-x86_64-unknown-linux-musl.tar.gz")"
 	folball="rg_folder"
@@ -326,7 +326,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 	sudo mv $folball/rg /usr/local/bin/rg
 	sudo rm $tarball
 	sudo rm -rf $folball
-	popd
+	popd > /dev/null
 
 	location="$(which rg)"
 	version="$(rg --version)"
@@ -340,12 +340,12 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 	pushd /tmp/ > /dev/null
 	curl -s https://api.github.com/repos/chmln/sd/releases/latest \
 	| jq -r '.assets[] | select(.name | contains("-x86_64-unknown-linux-gnu")) | .browser_download_url' \
-	| wget -i - > /dev/null
+	| wget -qi -
 	
 	tarball="$(find . -name "sd-*-x86_64-unknown-linux-gnu")"
 	chmod +x $tarball
 	sudo mv $tarball /usr/local/bin/sd
-	popd
+	popd > /dev/null
 
 	location="$(which sd)"
 	version="$(sd --version)"
@@ -375,14 +375,14 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
     	pushd /tmp/ > /dev/null
 	curl -s https://api.github.com/repos/dalance/procs/releases/latest \
 	| jq -r '.assets[] | select(.name | contains("-x86_64-lnx.zip")) | .browser_download_url' \
-	| wget -i - > /dev/null
+	| wget -qi -
 	
 	tarball="$(find . -name "procs-*-x86_64-lnx.zip")"
 	unzip -p $tarball > procs 
 	chmod +x procs
 	sudo mv procs /usr/local/bin/procs
 	sudo rm $tarball
-	popd
+	popd > /dev/null
 
 	location="$(which procs)"
 	version="$(procs --version)"
@@ -394,11 +394,11 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 	echo -e "${INFOER}installing kubectl...${NC}"
 
     	pushd /tmp/ > /dev/null
-	curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl" > /dev/null
+	curl -sLO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
 	
 	chmod +x kubectl
 	sudo mv kubectl /usr/local/bin/kubectl
-	popd
+	popd > /dev/null
 
 	location="$(which kubectl)"
 	version="$(kubectl version --client)"
@@ -410,11 +410,11 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 	echo -e "${INFOER}installing minio mc...${NC}"
 
     	pushd /tmp/ > /dev/null
-	curl -LO "https://dl.min.io/client/mc/release/linux-amd64/mc" > /dev/null
+	curl -sLO "https://dl.min.io/client/mc/release/linux-amd64/mc"
 	
 	chmod +x mc
 	sudo mv mc /usr/local/bin/mc
-	popd
+	popd > /dev/null
 
 	location="$(which mc)"
 	version="$(mc --version)"
@@ -428,7 +428,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 	pushd /tmp/ > /dev/null
 	curl -s https://api.github.com/repos/casey/just/releases/latest \
 	| jq -r '.assets[] | select(.name | contains("-x86_64-unknown-linux-musl.tar.gz")) | .browser_download_url' \
-	| wget -i - > /dev/null
+	| wget -qi -
 	
 	tarball="$(find . -name "just-*-x86_64-unknown-linux-musl.tar.gz")"
 	folball="just_folder"
@@ -437,7 +437,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 	sudo mv $folball/just /usr/local/bin/just
 	sudo rm -rf $folball
 	sudo rm $tarball
-	popd
+	popd > /dev/null
 
 	location="$(which just)"
 	version="$(just --version)"
@@ -451,11 +451,11 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 	pushd /tmp/ > /dev/null
 	curl -s https://api.github.com/repos/neovim/neovim/releases/latest \
 	| jq -r '.assets[] | select(.name | contains("nvim.appimage.") | not ) | select(.name | contains("nvim.appimage")) | .browser_download_url' \
-	| wget -i - > /dev/null
+	| wget -qi -
 	
 	chmod +x nvim.appimage
 	sudo mv nvim.appimage /usr/local/bin/nvim
-	popd
+	popd > /dev/null
 
 	location="$(which nvim)"
 	version="$(nvim --version)"
