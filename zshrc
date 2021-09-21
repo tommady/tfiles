@@ -250,6 +250,8 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 	mkdir $folball && tar -xzf $tarball -C $folball --strip-components 1
 	chmod +x $folball/bat
 	sudo mv $folball/bat /usr/local/bin/bat
+	sudo rm $tarball
+	sudo rm -rf $folball
 	popd
 
 	location="$(which bat)"
@@ -269,6 +271,8 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 	mkdir $folball && unzip -qq $tarball -d $folball
 	chmod +x $folball/bin/exa
 	sudo mv $folball/bin/exa /usr/local/bin/exa
+	sudo rm $tarball
+	sudo rm -rf $folball
 	popd
 
 	location="$(which exa)"
@@ -288,6 +292,8 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 	mkdir $folball && tar -xzf $tarball -C $folball --strip-components 1
 	chmod +x $folball/fd
 	sudo mv $folball/fd /usr/local/bin/fd
+	sudo rm $tarball
+	sudo rm -rf $folball
 	popd
 
 	location="$(which fd)"
@@ -307,6 +313,8 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 	mkdir $folball && tar -xzf $tarball -C $folball --strip-components 1
 	chmod +x $folball/rg
 	sudo mv $folball/rg /usr/local/bin/rg
+	sudo rm $tarball
+	sudo rm -rf $folball
 	popd
 
 	location="$(which rg)"
@@ -358,6 +366,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 	unzip -p $tarball > procs 
 	chmod +x procs
 	sudo mv procs /usr/local/bin/procs
+	sudo rm $tarball
 	popd
 
 	location="$(which procs)"
@@ -405,6 +414,8 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 	mkdir $folball && tar -xzf $tarball -C $folball
 	chmod +x $folball/just
 	sudo mv $folball/just /usr/local/bin/just
+	sudo rm -rf $folball
+	sudo rm $tarball
 	popd
 
 	location="$(which just)"
