@@ -55,8 +55,14 @@ if (has("termguicolors"))
 endif
 " endif
 
-syntax on
-set number relativenumber
+scriptencoding utf-8
+syntax enable
+set number
+set fileencodings=utf-8
+set encoding=utf-8
+set nocompatible
+set autoindent
+set nobackup
 set nowrap
 set undofile
 set undodir=~/.local/share/nvim/site/undodir
@@ -69,11 +75,11 @@ set incsearch
 set smartcase
 set hlsearch!
 set wildmode=longest,list,full
-set completeopt=longest,menuone
 set exrc
 set secure
 set autoread
 set rtp+=~/.fzf
+set shortmess+=c
 
 " Save whenever switching windows or leaving vim. This is useful when running
 " the tests inside vim without having to save all files first.
@@ -102,7 +108,7 @@ autocmd FileType markdown setlocal ts=4 sts=4 sw=4
 autocmd FileType sh setlocal ts=2 sts=2 sw=2 expandtab
 autocmd FileType make setlocal ts=2 sts=2 sw=2 expandtab
 " set justfile syntax
-autocmd BufNewFile,BufRead justfile setf make
+autocmd BufNewFile,BufRead Justfile setf make
 
 call plug#begin("~/.local/share/nvim/site/plugged")
 filetype plugin indent on
@@ -110,45 +116,30 @@ filetype plugin indent on
 Plug 'tpope/vim-sensible'
 Plug 'hashivim/vim-terraform'
 Plug 'andrewstuart/vim-kubernetes'
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries', 'for': 'go' }
 Plug 'jiangmiao/auto-pairs'
 " rust lang
 Plug 'rust-lang/rust.vim'
 Plug 'tpope/vim-surround'
-Plug 'ervandew/supertab'
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
-" vim style botton line
-Plug 'itchyny/lightline.vim'
-" light way to display git branch
-Plug 'itchyny/vim-gitbranch'
 Plug 'airblade/vim-gitgutter'
 " markdown
-Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
-" markdown preview
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
-" comment out in visual mode
-Plug 'tpope/vim-commentary'
-" dark power completion
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-" rust auto completion with deoplete
-Plug 'sebastianmarkow/deoplete-rust'
-" Adds file type glyphs/icons to popular
-Plug 'ryanoasis/vim-devicons'
-" tags
-Plug 'ludovicchabant/vim-gutentags'
-" fzf
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-" ale better neomake
-Plug 'dense-analysis/ale'
 " vim-one theme
 Plug 'rakr/vim-one'
 " multi cursor ctrl d
 Plug 'terryma/vim-multiple-cursors'
 " toml syntax
 Plug 'cespare/vim-toml'
+" nvim 5.0 only goes below
+Plug 'neovim/nvim-lspconfig'
+Plug 'glepnir/lspsaga.nvim'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-lua/completion-nvim'
+Plug 'hoob3rt/lualine.nvim'
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'ryanoasis/vim-devicons'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
 
 call plug#end()
 
@@ -172,101 +163,12 @@ let g:multi_cursor_prev_key            = '<C-P>'
 let g:multi_cursor_skip_key            = '<C-x>'
 let g:multi_cursor_quit_key            = '<Esc>'
 
-" deoplete config
-let g:deoplete#enable_at_startup = 1
-set completeopt+=noselect
-let g:deoplete#disable_auto_complete = 0 " set to 1 if you want to disable autocomplete
-let g:deoplete#max_processes = 2
-let s:go_pattern = '[^. *\t]\.\w*'
-call deoplete#custom#source('_', 'max_menu_width', 80)
-call deoplete#custom#option(
-    \ 'ignore_sources', {'_':[ 'around', 'buffer' ]},
-    \ 'omni_patterns', {
-    \ 'go': s:go_pattern,
-    \ }
-    \ )
-
-" deoplete go config
-let g:deoplete#complete_method = "omnifunc"
-
-" deoplete rust config
-let g:deoplete#sources#rust#racer_binary = '~/.cargo/bin/racer'
-let g:deoplete#sources#rust#rust_source_path = '`rustc --print sysroot`/lib/rustlib/src/rust/src'
-let g:deoplete#sources#rust#disable_keymap = 1
-
-" ale config
-" Error and warning signs.
-let g:ale_sign_column_always = 1
-let g:ale_sign_error = '✖' 
-let g:ale_sign_warning = '∆'
-let g:airline#extensions#ale#enabled = 1
-let g:ale_lint_on_text_changed = 'never'
-let g:ale_lint_on_insert_leave = 0
-let g:ale_fix_on_save = 1
-let g:ale_open_list = 0 
-augroup CloseLoclistWindowGroup
-  autocmd!
-  autocmd QuitPre * if empty(&buftype) | lclose | endif
-augroup END
-let g:ale_linters = {
-    \ 'go': ['golangci-lint', 'golint'],
-    \ 'rust': ['cargo', 'rls', 'analyzer'],
-    \ 'python': ['flake8', 'pylint']
-    \ }
-let g:ale_fixers = {
-    \ 'go': ['goimports'],
-    \ 'rust': ['rustfmt'],
-    \ 'python': ['yapf']
-    \ }
-
-" ale golang
-let g:ale_go_golangci_lint_options = ""
-let g:ale_go_golangci_lint_package = 1
-
-" ale rust
-let g:ale_rust_cargo_check_tests = 1
-let g:ale_rust_cargo_check_examples = 1
-let g:ale_rust_rls_toolchain = 'stable'
-
 " gitgutter
 set updatetime=100
 let g:gitgutter_max_signs = 500
 let g:gitgutter_map_keys = 0
 let g:gitgutter_override_sign_column_highlight = 0
-
-if exists('&signcolumn')  " Vim 7.4.2201
-  set signcolumn=yes
-else
-  let g:gitgutter_sign_column_always = 1
-endif
-
-" lightline
-set laststatus=2
-set noshowmode
-if !has('gui_running')
-  set t_Co=256
-endif
-
-let g:lightline = {
-      \ 'colorscheme': 'wombat',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
-      \ },
-      \ 'component_function': {
-      \   'gitbranch': 'gitbranch#name',
-      \   'filename': 'LightlineFilename',
-      \ },
-      \ }
-
-function! LightlineFilename()
-  let root = fnamemodify(get(b:, 'gitbranch_path'), ':h:h')
-  let path = expand('%:p')
-  if path[:len(root)-1] ==# root
-    return path[len(root)+1:]
-  endif
-  return expand('%')
-endfunction
+set signcolumn=yes
 
 " vim-go config
 let g:go_fmt_command = "goimports"
@@ -280,24 +182,25 @@ let g:go_highlight_operators = 1
 let g:go_highlight_extra_types = 1
 let g:go_highlight_build_constraints = 1
 let g:go_highlight_generate_tags = 1
+let g:go_highlight_structs = 1 
+let g:go_highlight_methods = 1
+let g:go_highlight_build_constraints = 1
 let g:go_gocode_propose_source = 0
 let g:go_template_autocreate = 0
 let g:go_def_mode='gopls'
+let g:go_referrers_mode='gopls'
 let g:go_info_mode='gopls'
-let g:go_def_mapping_enabled = 0
+let g:go_def_mapping_enabled = 1
 let g:go_fmt_fail_silently = 1
 let g:go_term_enabled = 1
-let g:go_auto_sameids = 1
-" omnifunc set to vim-go if deoplete enable
-" call deoplete#custom#option('omni_patterns', { 'go': '[^. *\t]\.\w*' })
-au FileType go silent nmap <C-]> :GoDef<cr>
-au FileType go silent nmap <C-i> :GoInfo<cr>
+let g:go_gopls_deep_completion = v:false
+let g:go_gopls_temp_modfile = 1
+let g:go_gopls_use_placeholders = 1
+let g:go_addtags_transform = 'camelcase'
 
 " rust config
 let g:rustfmt_autosave = 1
 au FileType rust let b:AutoPairs = AutoPairsDefine({'\w\zs<': '>'})
-au FileType rust silent nmap <C-]> :ALEGoToDefinition<cr>
-au FileType rust silent nmap <C-i> :ALEHover<cr>
 
 " auto pair config
 let g:AutoPairsWildClosedPair = ''
@@ -309,49 +212,129 @@ let g:AutoPairsShortcutBackInsert = '<c-b>'
 let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_no_default_key_mappings = 1
 
-" markdown preview config
-let g:mkdp_page_title = '${name}'
-let g:mkdp_preview_options = {
-    \ 'mkit': {},
-    \ 'katex': {},
-    \ 'uml': {},
-    \ 'maid': {},
-    \ 'disable_sync_scroll': 0,
-    \ 'sync_scroll_type': 'middle',
-    \ 'hide_yaml_meta': 1,
-    \ 'sequence_diagrams': {'theme': 'simple'}
-    \ }
-
 " json format
 au FileType json autocmd BufWritePost *.json execute '%!python3 -m json.tool' | w
 
-" gutentags config
-au FileType gitcommit,gitrebase let g:gutentags_enabled=0
-let g:gutentags_trace = 0 
-let g:gutentags_exclude_filetypes=['gitcommit', 'gitrebase']
-let g:gutentags_project_root = ['.root', '.svn', '.git', '.project']
-let g:gutentags_ctags_tagfile = '.tags'
-let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
-let s:vim_tags = expand('~/.cache/tags')
-let g:gutentags_cache_dir = s:vim_tags
-if !isdirectory(s:vim_tags)
-   silent! call mkdir(s:vim_tags, 'p')
-endif
+" nvim-lua/completion-nvim
+set completeopt=menuone,noinsert,noselect
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
-" fzf config
-let g:fzf_command_prefix = 'Fzf'
-let g:fzf_layout = { 'down': '~40%' }
-let g:fzf_buffers_jump = 1
-command! -bang -nargs=* Rg
-  \ call fzf#vim#grep(
-  \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
-  \   <bang>0 ? fzf#vim#with_preview('up:60%')
-  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
-  \   <bang>0)
+" lspsaga settings
+" nnoremap <silent> <C-i> <cmd>Lspsaga hover_doc<cr>
 
-" [Tags] Command to generate tags file
-let g:fzf_tags_command = 'ctags -R'
-nnoremap <silent> <c-p> :FzfFiles<CR>
-nnoremap <silent> <c-g> :FzfBTags<CR>
-nnoremap <silent> <c-G> :FzfTags<CR>
-nnoremap <silent> <c-r> :FzfRg<CR> 
+" telescope settings
+nnoremap <silent> <C-p> <cmd>Telescope find_files<cr>
+nnoremap <silent> <C-r> <cmd>Telescope live_grep<cr>
+
+" nvim 5.0 lua settings
+lua << EOF
+local nvim_lsp = require('lspconfig')
+local protocol = require'vim.lsp.protocol'
+
+local on_attach = function(client, bufnr)
+  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+
+  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  local opts = { noremap=true, silent=true }
+  buf_set_keymap('n', '<C-i>', '<cmd>lua vim.lsp.buf.hover()<cr>', opts) 
+  buf_set_keymap('n', '<C-]>', '<cmd>lua vim.lsp.buf.definition()<cr>', opts)
+
+  require('completion').on_attach(client, bufnr)
+  protocol.CompletionItemKind = {
+    '', -- Text
+    '', -- Method
+    '', -- Function
+    '', -- Constructor
+    '', -- Field
+    '', -- Variable
+    '', -- Class
+    'ﰮ', -- Interface
+    '', -- Module
+    '', -- Property
+    '', -- Unit
+    '', -- Value
+    '', -- Enum
+    '', -- Keyword
+    '﬌', -- Snippet
+    '', -- Color
+    '', -- File
+    '', -- Reference
+    '', -- Folder
+    '', -- EnumMember
+    '', -- Constant
+    '', -- Struct
+    '', -- Event
+    'ﬦ', -- Operator
+    '', -- TypeParameter
+  }
+end
+
+local servers = { 
+  "rls", -- can use rustup rust_analyzer instead
+  "gopls",
+}
+
+for _, lsp in ipairs(servers) do
+    nvim_lsp[lsp].setup { on_attach = on_attach }
+end
+
+local status, lualine = pcall(require, "lualine")
+if (not status) then return end
+lualine.setup {
+  options = {
+    icons_enabled = true,
+    theme = 'codedark',
+    section_separators = {'', ''},
+    component_separators = {'', ''},
+    disabled_filetypes = {}
+  },
+  sections = {
+    lualine_a = {'mode'},
+    lualine_b = {'branch'},
+    lualine_c = {'filename'},
+    lualine_x = {
+      { 'diagnostics', sources = {"nvim_lsp"}, symbols = {error = ' ', warn = ' ', info = ' ', hint = ' '} },
+      'encoding',
+      'filetype'
+    },
+    lualine_y = {'progress'},
+    lualine_z = {'location'}
+  },
+  inactive_sections = {
+    lualine_a = {},
+    lualine_b = {},
+    lualine_c = {'filename'},
+    lualine_x = {'location'},
+    lualine_y = {},
+    lualine_z = {}
+  },
+  tabline = {},
+  extensions = {'fugitive'}
+}
+
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  ignore_install = { "javascript" }, -- List of parsers to ignore installing
+  highlight = {
+    enable = true,              -- false will disable the whole extension
+    disable = { "c", "rust" },  -- list of language that will be disabled
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    additional_vim_regex_highlighting = false,
+  },
+}
+
+local saga = require 'lspsaga'
+saga.init_lsp_saga {
+  error_sign = '',
+  warn_sign = '',
+  hint_sign = '',
+  infor_sign = '',
+  border_style = "round",
+}
+EOF
