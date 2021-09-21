@@ -216,20 +216,23 @@ if [[ "$(uname)" == "Darwin" ]]; then
     fi
 
 elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
-    MARKER='\033[0;31m'
+    INFOER='\033[0;37m'
+    MARKER='\033[1;32m'
     NC='\033[0m' # No Color
     # echo -e "I ${MARKER}love${NC} Stack Overflow"
 
     # jq (this one needs to be install first, since the rest of tools are counting on it)
     if ! [ -x "$(command -v jq)" ]; then
-	pushd /tmp/
+	echo -e "${INFOER}installing jq...${NC}"
+
+	pushd /tmp/ > /dev/null
 	curl -s https://api.github.com/repos/stedolan/jq/releases/latest \
 	| grep "browser_download_url.*jq-linux64" \
 	| cut -d ":" -f 2,3 \
 	| tr -d \" \
-	| wget -qi -
+	| wget -qi - > /dev/null
 	
-	chmod +x jq-linux64	
+	chmod +x jq-linux64
 	sudo mv jq-linux64 /usr/local/bin/jq
 	popd
 
@@ -240,10 +243,12 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 
     # bat a better cat
     if ! [ -x "$(command -v bat)" ]; then
-	pushd /tmp/
+	echo -e "${INFOER}installing bat...${NC}"
+
+	pushd /tmp/ > /dev/null
 	curl -s https://api.github.com/repos/sharkdp/bat/releases/latest \
 	| jq -r '.assets[] | select(.name | contains("x86_64-unknown-linux-gnu.tar.gz")) | .browser_download_url' \
-	| wget -i -
+	| wget -i - > /dev/null
 	
 	tarball="$(find . -name "bat-*-x86_64-unknown-linux-gnu.tar.gz")"
 	folball="bat_folder"
@@ -261,10 +266,12 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 
     # exa a better ls
     if ! [ -x "$(command -v exa)" ]; then
-        pushd /tmp/
+	echo -e "${INFOER}installing exa...${NC}"
+
+        pushd /tmp/ > /dev/null
 	curl -s https://api.github.com/repos/ogham/exa/releases/latest \
 	| jq -r '.assets[] | select(.name | contains("linux-x86_64-musl")) | .browser_download_url' \
-	| wget -i -
+	| wget -i - > /dev/null
 	
 	tarball="$(find . -name "exa-linux-x86_64-musl-*")"
 	folball="exa_folder"
@@ -282,10 +289,12 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
     
     # fd a better find
     if ! [ -x "$(command -v fd)" ]; then
-	pushd /tmp/
+	echo -e "${INFOER}installing fd...${NC}"
+
+	pushd /tmp/ > /dev/null
 	curl -s https://api.github.com/repos/sharkdp/fd/releases/latest \
 	| jq -r '.assets[] | select(.name | contains("-x86_64-unknown-linux-gnu.tar.gz")) | .browser_download_url' \
-	| wget -i -
+	| wget -i - > /dev/null
 	
 	tarball="$(find . -name "fd-*-x86_64-unknown-linux-gnu.tar.gz")"
 	folball="fd_folder"
@@ -303,10 +312,12 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
     
     # rg ripgrep
     if ! [ -x "$(command -v rg)" ]; then
-	pushd /tmp/
+	echo -e "${INFOER}installing rg...${NC}"
+
+	pushd /tmp/ > /dev/null
 	curl -s https://api.github.com/repos/BurntSushi/ripgrep/releases/latest \
 	| jq -r '.assets[] | select(.name | contains("-x86_64-unknown-linux-musl.tar.gz")) | .browser_download_url' \
-	| wget -i -
+	| wget -i - > /dev/null
 	
 	tarball="$(find . -name "ripgrep-*-x86_64-unknown-linux-musl.tar.gz")"
 	folball="rg_folder"
@@ -324,10 +335,12 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
     
     # sd better sed
     if ! [ -x "$(command -v sd)" ]; then
-	pushd /tmp/
+	echo -e "${INFOER}installing sd...${NC}"
+
+	pushd /tmp/ > /dev/null
 	curl -s https://api.github.com/repos/chmln/sd/releases/latest \
 	| jq -r '.assets[] | select(.name | contains("-x86_64-unknown-linux-gnu")) | .browser_download_url' \
-	| wget -i -
+	| wget -i - > /dev/null
 	
 	tarball="$(find . -name "sd-*-x86_64-unknown-linux-gnu")"
 	chmod +x $tarball
@@ -357,10 +370,12 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 
     # procs: https://github.com/dalance/procs
     if ! [ -x "$(command -v procs)" ]; then
-    	pushd /tmp/
+	echo -e "${INFOER}installing procs...${NC}"
+
+    	pushd /tmp/ > /dev/null
 	curl -s https://api.github.com/repos/dalance/procs/releases/latest \
 	| jq -r '.assets[] | select(.name | contains("-x86_64-lnx.zip")) | .browser_download_url' \
-	| wget -i -
+	| wget -i - > /dev/null
 	
 	tarball="$(find . -name "procs-*-x86_64-lnx.zip")"
 	unzip -p $tarball > procs 
@@ -376,8 +391,10 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 
     # kubectl 
     if ! [ -x "$(command -v kubectl)" ]; then
-    	pushd /tmp/
-	curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
+	echo -e "${INFOER}installing kubectl...${NC}"
+
+    	pushd /tmp/ > /dev/null
+	curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl" > /dev/null
 	
 	chmod +x kubectl
 	sudo mv kubectl /usr/local/bin/kubectl
@@ -390,8 +407,10 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 
     # minio client 
     if ! [ -x "$(command -v mc)" ]; then
-    	pushd /tmp/
-	curl -LO "https://dl.min.io/client/mc/release/linux-amd64/mc"
+	echo -e "${INFOER}installing minio mc...${NC}"
+
+    	pushd /tmp/ > /dev/null
+	curl -LO "https://dl.min.io/client/mc/release/linux-amd64/mc" > /dev/null
 	
 	chmod +x mc
 	sudo mv mc /usr/local/bin/mc
@@ -404,10 +423,12 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
     
     # just https://github.com/casey/just 
     if ! [ -x "$(command -v just)" ]; then
-	pushd /tmp/
+	echo -e "${INFOER}installing just...${NC}"
+
+	pushd /tmp/ > /dev/null
 	curl -s https://api.github.com/repos/casey/just/releases/latest \
 	| jq -r '.assets[] | select(.name | contains("-x86_64-unknown-linux-musl.tar.gz")) | .browser_download_url' \
-	| wget -i -
+	| wget -i - > /dev/null
 	
 	tarball="$(find . -name "just-*-x86_64-unknown-linux-musl.tar.gz")"
 	folball="just_folder"
@@ -425,10 +446,12 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 
     # nvim
     if ! [ -f "/usr/local/bin/nvim" ]; then
-	pushd /tmp/
+	echo -e "${INFOER}installing nvim...${NC}"
+
+	pushd /tmp/ > /dev/null
 	curl -s https://api.github.com/repos/neovim/neovim/releases/latest \
 	| jq -r '.assets[] | select(.name | contains("nvim.appimage.") | not ) | select(.name | contains("nvim.appimage")) | .browser_download_url' \
-	| wget -i -
+	| wget -i - > /dev/null
 	
 	chmod +x nvim.appimage
 	sudo mv nvim.appimage /usr/local/bin/nvim
@@ -441,6 +464,8 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 
     # podman
     if ! [ -x "$(command -v podman)" ]; then
+	echo -e "${INFOER}installing podman...${NC}"
+
 	echo "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_${VERSION_ID}/ /" | sudo tee /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list
 	curl -L https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_${VERSION_ID}/Release.key | sudo apt-key add -
 	sudo apt-get update
