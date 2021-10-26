@@ -338,3 +338,19 @@ saga.init_lsp_saga {
   border_style = "round",
 }
 EOF
+
+" for monorepo golang memo
+"
+" local nvim_lsp = require('lspconfig')
+" local root_pattern = nvim_lsp.util.root_pattern(".git", "go.mod")
+" 
+" -- try not to use gopls on gophers/go
+" function root_dir(fname)
+"   local root = fname:match ".*/gophers/go/.-/"
+"   return root ~= nil and root or root_pattern(fname) 
+" end
+" 
+" nvim_lsp['gopls'].setup {
+"   root_dir = root_dir,
+"   ...
+" }
