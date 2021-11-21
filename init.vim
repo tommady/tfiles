@@ -130,6 +130,8 @@ Plug 'rakr/vim-one'
 Plug 'terryma/vim-multiple-cursors'
 " toml syntax
 Plug 'cespare/vim-toml'
+" git in nvim https://github.com/tpope/vim-fugitive/blob/master/doc/fugitive.txt
+Plug 'tpope/vim-fugitive'
 " nvim 5.0 only goes below
 Plug 'neovim/nvim-lspconfig'
 Plug 'glepnir/lspsaga.nvim'
