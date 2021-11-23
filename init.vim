@@ -136,7 +136,6 @@ Plug 'tpope/vim-fugitive'
 Plug 'neovim/nvim-lspconfig'
 Plug 'glepnir/lspsaga.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'nvim-lua/completion-nvim'
 Plug 'hoob3rt/lualine.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'ryanoasis/vim-devicons'
@@ -224,6 +223,7 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " lspsaga settings
 " nnoremap <silent> <C-i> <cmd>Lspsaga hover_doc<cr>
+nnoremap <silent> <C-f> <cmd>Lspsaga show_line_diagnostics<cr>
 
 " telescope settings
 nnoremap <silent> <C-p> <cmd>Telescope find_files<cr>
@@ -238,13 +238,13 @@ local on_attach = function(client, bufnr)
   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
   local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
+  -- Enable completion triggered by <c-x><c-o>
   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
   local opts = { noremap=true, silent=true }
   buf_set_keymap('n', '<C-i>', '<cmd>lua vim.lsp.buf.hover()<cr>', opts) 
   buf_set_keymap('n', '<C-]>', '<cmd>lua vim.lsp.buf.definition()<cr>', opts)
 
-  require('completion').on_attach(client, bufnr)
   protocol.CompletionItemKind = {
     '', -- Text
     '', -- Method
@@ -280,7 +280,12 @@ local servers = {
 }
 
 for _, lsp in ipairs(servers) do
-    nvim_lsp[lsp].setup { on_attach = on_attach }
+  nvim_lsp[lsp].setup { 
+    on_attach = on_attach,
+    flags = {
+      debounce_text_changes = 150,
+    }
+  }
 end
 
 local status, lualine = pcall(require, "lualine")
@@ -322,7 +327,7 @@ require'nvim-treesitter.configs'.setup {
   ignore_install = { "javascript" }, -- List of parsers to ignore installing
   highlight = {
     enable = true,              -- false will disable the whole extension
-    disable = { "c", "rust" },  -- list of language that will be disabled
+    disable = { "rust" },  -- list of language that will be disabled
     -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
     -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
     -- Using this option may slow down your editor, and you may see some duplicate highlights.
@@ -334,15 +339,15 @@ require'nvim-treesitter.configs'.setup {
 local saga = require 'lspsaga'
 saga.init_lsp_saga {
   use_saga_diagnostic_sign = true,
-  dianostic_header_icon = '   ',
+  dianostic_header_icon = '  ',
   code_action_icon = '',
-  finder_definition_icon = '  ',
-  finder_reference_icon = '  ',
+  finder_definition_icon = ' ',
+  finder_reference_icon = ' ',
   error_sign = '',
   warn_sign = '',
   hint_sign = '',
   infor_sign = '', 
-  definition_preview_icon = '  ',
+  definition_preview_icon = ' ',
   border_style = "single",
 }
 EOF
