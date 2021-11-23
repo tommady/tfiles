@@ -477,6 +477,26 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 	version="$(podman --version)"
 	echo "${MARKER}podman binary location: $location and version: $version${NC}"
     fi
+
+    # rust-analyzer
+    if ! [ -x "$(command -v rust-analyzer)" ]; then
+	echo -e "${INFOER}installing rust-analyzer...${NC}"
+
+	pushd /tmp/ > /dev/null
+	curl -s https://api.github.com/repos/rust-analyzer/rust-analyzer/releases/latest \
+	| jq -r '.assets[] | select(.name | contains("-x86_64-unknown-linux-gnu.gz")) | .browser_download_url' \
+	| wget -qi -
+	
+	gunzip rust-analyzer-x86_64-unknown-linux-gnu.gz
+	mv rust-analyzer-x86_64-unknown-linux-gnu rust-analyzer
+	chmod +x rust-analyzer
+	sudo mv rust-analyzer /usr/local/bin/rust-analyzer
+	popd > /dev/null
+
+	location="$(which rust-analyzer)"
+	version="$(rust-analyzer --version)"
+	echo "${MARKER}rust-analyzer binary location: $location and version: $version${NC}"
+    fi
 fi
 
 # fzf zsh config
