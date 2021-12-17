@@ -134,7 +134,7 @@ Plug 'cespare/vim-toml'
 Plug 'tpope/vim-fugitive'
 " nvim 5.0 only goes below
 Plug 'neovim/nvim-lspconfig'
-Plug 'glepnir/lspsaga.nvim'
+Plug 'tami5/lspsaga.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'hoob3rt/lualine.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
