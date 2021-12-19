@@ -1,7 +1,7 @@
 SHELL:=/bin/bash
 .ONESHELL:
-.PHONY: deploy_tmux deploy_nvim deploy_p10k deploy_zshrc
-.SILENT: deploy_tmux deploy_nvim deploy_p10k deploy_zshrc
+.PHONY: deploy_tmux deploy_nvim deploy_p10k deploy_zshrc deploy_alacritty
+.SILENT: deploy_tmux deploy_nvim deploy_p10k deploy_zshrc deploy_alacritty
 
 all: deploy_tmux deploy_nvim deploy_p10k deploy_zshrc deploy_alacritty
 
