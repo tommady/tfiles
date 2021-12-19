@@ -64,9 +64,9 @@ export TERM="xterm-256color"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-  git
-  zsh-autosuggestions
-  zsh-syntax-highlighting
+    git
+    zsh-autosuggestions
+    zsh-syntax-highlighting
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -124,13 +124,13 @@ if [[ "$(uname)" == "Darwin" ]]; then
     fi
 fi
 
-# install nvim 
+# install nvim
 if [[ "$(uname)" == "Darwin" ]]; then
     if ! [ -x "$(command -v nvim)" ]; then
-    	unlink /usr/local/bin/python
-    	ln -s /usr/local/bin/python3 /usr/local/bin/python
-    	pip3 install neovim --upgrade
-    	brew install neovim/neovim/neovim
+        unlink /usr/local/bin/python
+        ln -s /usr/local/bin/python3 /usr/local/bin/python
+        pip3 install neovim --upgrade
+        brew install neovim/neovim/neovim
     fi
 fi
 
@@ -157,62 +157,62 @@ if [[ "$(uname)" == "Darwin" ]]; then
     if ! [ -x "$(command -v exa)" ]; then
         brew install exa
     fi
-    
+
     # fd a better find
     if ! [ -x "$(command -v fd)" ]; then
         brew install fd
     fi
-    
+
     # rg ripgrep
     if ! [ -x "$(command -v rg)" ]; then
         brew install ripgrep
     fi
-    
+
     # sd better sed
     if ! [ -x "$(command -v sd)" ]; then
-    	brew install sd
+        brew install sd
     fi
-    
+
     # asciinema
     if ! [ -x "$(command -v asciinema)" ]; then
         brew install asciinema
     fi
-    
+
     # grip (for GitHub flavoured markdown)
     if ! [ -x "$(command -v grip)" ]; then
-    	brew install grip
+        brew install grip
     fi
-    
+
     # markdown
     if ! [ -x "$(command -v markdown)" ]; then
-    	brew install markdown
+        brew install markdown
     fi
-    
+
     # zsh-syntax-highlighting
     if ! [ -e /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
-    	brew install zsh-syntax-highlighting
+        brew install zsh-syntax-highlighting
     fi
     source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-    
+
     # zsh-autosuggestions
-    if ! [ -e /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh ] ; then
-    	brew install zsh-autosuggestions
+    if ! [ -e /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
+        brew install zsh-autosuggestions
     fi
     source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-    
+
     # ctags
     if ! [ -x "$(command -v ctags)" ]; then
-    	brew install --HEAD universal-ctags/universal-ctags/universal-ctags
+        brew install --HEAD universal-ctags/universal-ctags/universal-ctags
     fi
-    
+
     if ! [ -e $ZSH_CUSTOM/themes/powerlevel10k ]; then
-    	git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
+        git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
     fi
-    
+
     # fzf
     if ! [ -x "$(command -v fzf)" ]; then
-    	brew install fzf
-    	$(brew --prefix)/opt/fzf/install
+        brew install fzf
+        $(brew --prefix)/opt/fzf/install
     fi
 
 elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
@@ -223,305 +223,305 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 
     # jq (this one needs to be install first, since the rest of tools are counting on it)
     if ! [ -x "$(command -v jq)" ]; then
-	echo -e "${INFOER}installing jq...${NC}"
+        echo -e "${INFOER}installing jq...${NC}"
 
-	pushd /tmp/ > /dev/null
-	curl -s https://api.github.com/repos/stedolan/jq/releases/latest \
-	| grep "browser_download_url.*jq-linux64" \
-	| cut -d ":" -f 2,3 \
-	| tr -d \" \
-	| wget -qi -
-	
-	chmod +x jq-linux64
-	sudo mv jq-linux64 /usr/local/bin/jq
-	popd > /dev/null
+        pushd /tmp/ >/dev/null
+        curl -s https://api.github.com/repos/stedolan/jq/releases/latest \
+            | grep "browser_download_url.*jq-linux64" \
+            | cut -d ":" -f 2,3 \
+            | tr -d \" \
+            | wget -qi -
 
-	location="$(which jq)"
-	version="$(jq --version)"
-	echo -e "${MARKER}jq binary location: $location and version: $version${NC}"
+        chmod +x jq-linux64
+        sudo mv jq-linux64 /usr/local/bin/jq
+        popd >/dev/null
+
+        location="$(which jq)"
+        version="$(jq --version)"
+        echo -e "${MARKER}jq binary location: $location and version: $version${NC}"
     fi
 
     # bat a better cat
     if ! [ -x "$(command -v bat)" ]; then
-	echo -e "${INFOER}installing bat...${NC}"
+        echo -e "${INFOER}installing bat...${NC}"
 
-	pushd /tmp/ > /dev/null
-	curl -s https://api.github.com/repos/sharkdp/bat/releases/latest \
-	| jq -r '.assets[] | select(.name | contains("x86_64-unknown-linux-gnu.tar.gz")) | .browser_download_url' \
-	| wget -qi -
-	
-	tarball="$(find . -name "bat-*-x86_64-unknown-linux-gnu.tar.gz")"
-	folball="bat_folder"
-	mkdir $folball && tar -xzf $tarball -C $folball --strip-components 1
-	chmod +x $folball/bat
-	sudo mv $folball/bat /usr/local/bin/bat
-	sudo rm $tarball
-	sudo rm -rf $folball
-	popd > /dev/null
+        pushd /tmp/ >/dev/null
+        curl -s https://api.github.com/repos/sharkdp/bat/releases/latest \
+            | jq -r '.assets[] | select(.name | contains("x86_64-unknown-linux-gnu.tar.gz")) | .browser_download_url' \
+            | wget -qi -
 
-	location="$(which bat)"
-	version="$(bat --version)"
-	echo -e "${MARKER}bat binary location: $location and version: $version${NC}"
+        tarball="$(find . -name "bat-*-x86_64-unknown-linux-gnu.tar.gz")"
+        folball="bat_folder"
+        mkdir $folball && tar -xzf $tarball -C $folball --strip-components 1
+        chmod +x $folball/bat
+        sudo mv $folball/bat /usr/local/bin/bat
+        sudo rm $tarball
+        sudo rm -rf $folball
+        popd >/dev/null
+
+        location="$(which bat)"
+        version="$(bat --version)"
+        echo -e "${MARKER}bat binary location: $location and version: $version${NC}"
     fi
 
     # exa a better ls
     if ! [ -x "$(command -v exa)" ]; then
-	echo -e "${INFOER}installing exa...${NC}"
+        echo -e "${INFOER}installing exa...${NC}"
 
-        pushd /tmp/ > /dev/null
-	curl -s https://api.github.com/repos/ogham/exa/releases/latest \
-	| jq -r '.assets[] | select(.name | contains("linux-x86_64-musl")) | .browser_download_url' \
-	| wget -qi -
-	
-	tarball="$(find . -name "exa-linux-x86_64-musl-*")"
-	folball="exa_folder"
-	mkdir $folball && unzip -qq $tarball -d $folball
-	chmod +x $folball/bin/exa
-	sudo mv $folball/bin/exa /usr/local/bin/exa
-	sudo rm $tarball
-	sudo rm -rf $folball
-	popd > /dev/null
+        pushd /tmp/ >/dev/null
+        curl -s https://api.github.com/repos/ogham/exa/releases/latest \
+            | jq -r '.assets[] | select(.name | contains("linux-x86_64-musl")) | .browser_download_url' \
+            | wget -qi -
 
-	location="$(which exa)"
-	version="$(exa --version)"
-	echo -e "${MARKER}exa binary location: $location and version: $version${NC}"
+        tarball="$(find . -name "exa-linux-x86_64-musl-*")"
+        folball="exa_folder"
+        mkdir $folball && unzip -qq $tarball -d $folball
+        chmod +x $folball/bin/exa
+        sudo mv $folball/bin/exa /usr/local/bin/exa
+        sudo rm $tarball
+        sudo rm -rf $folball
+        popd >/dev/null
+
+        location="$(which exa)"
+        version="$(exa --version)"
+        echo -e "${MARKER}exa binary location: $location and version: $version${NC}"
     fi
-    
+
     # fd a better find
     if ! [ -x "$(command -v fd)" ]; then
-	echo -e "${INFOER}installing fd...${NC}"
+        echo -e "${INFOER}installing fd...${NC}"
 
-	pushd /tmp/ > /dev/null
-	curl -s https://api.github.com/repos/sharkdp/fd/releases/latest \
-	| jq -r '.assets[] | select(.name | contains("-x86_64-unknown-linux-gnu.tar.gz")) | .browser_download_url' \
-	| wget -qi -
-	
-	tarball="$(find . -name "fd-*-x86_64-unknown-linux-gnu.tar.gz")"
-	folball="fd_folder"
-	mkdir $folball && tar -xzf $tarball -C $folball --strip-components 1
-	chmod +x $folball/fd
-	sudo mv $folball/fd /usr/local/bin/fd
-	sudo rm $tarball
-	sudo rm -rf $folball
-	popd > /dev/null
+        pushd /tmp/ >/dev/null
+        curl -s https://api.github.com/repos/sharkdp/fd/releases/latest \
+            | jq -r '.assets[] | select(.name | contains("-x86_64-unknown-linux-gnu.tar.gz")) | .browser_download_url' \
+            | wget -qi -
 
-	location="$(which fd)"
-	version="$(fd --version)"
-	echo "${MARKER}fd binary location: $location and version: $version${NC}"
+        tarball="$(find . -name "fd-*-x86_64-unknown-linux-gnu.tar.gz")"
+        folball="fd_folder"
+        mkdir $folball && tar -xzf $tarball -C $folball --strip-components 1
+        chmod +x $folball/fd
+        sudo mv $folball/fd /usr/local/bin/fd
+        sudo rm $tarball
+        sudo rm -rf $folball
+        popd >/dev/null
+
+        location="$(which fd)"
+        version="$(fd --version)"
+        echo "${MARKER}fd binary location: $location and version: $version${NC}"
     fi
-    
+
     # rg ripgrep
     if ! [ -x "$(command -v rg)" ]; then
-	echo -e "${INFOER}installing rg...${NC}"
+        echo -e "${INFOER}installing rg...${NC}"
 
-	pushd /tmp/ > /dev/null
-	curl -s https://api.github.com/repos/BurntSushi/ripgrep/releases/latest \
-	| jq -r '.assets[] | select(.name | contains("-x86_64-unknown-linux-musl.tar.gz")) | .browser_download_url' \
-	| wget -qi -
-	
-	tarball="$(find . -name "ripgrep-*-x86_64-unknown-linux-musl.tar.gz")"
-	folball="rg_folder"
-	mkdir $folball && tar -xzf $tarball -C $folball --strip-components 1
-	chmod +x $folball/rg
-	sudo mv $folball/rg /usr/local/bin/rg
-	sudo rm $tarball
-	sudo rm -rf $folball
-	popd > /dev/null
+        pushd /tmp/ >/dev/null
+        curl -s https://api.github.com/repos/BurntSushi/ripgrep/releases/latest \
+            | jq -r '.assets[] | select(.name | contains("-x86_64-unknown-linux-musl.tar.gz")) | .browser_download_url' \
+            | wget -qi -
 
-	location="$(which rg)"
-	version="$(rg --version)"
-	echo "${MARKER}rg binary location: $location and version: $version${NC}"
+        tarball="$(find . -name "ripgrep-*-x86_64-unknown-linux-musl.tar.gz")"
+        folball="rg_folder"
+        mkdir $folball && tar -xzf $tarball -C $folball --strip-components 1
+        chmod +x $folball/rg
+        sudo mv $folball/rg /usr/local/bin/rg
+        sudo rm $tarball
+        sudo rm -rf $folball
+        popd >/dev/null
+
+        location="$(which rg)"
+        version="$(rg --version)"
+        echo "${MARKER}rg binary location: $location and version: $version${NC}"
     fi
-    
+
     # sd better sed
     if ! [ -x "$(command -v sd)" ]; then
-	echo -e "${INFOER}installing sd...${NC}"
+        echo -e "${INFOER}installing sd...${NC}"
 
-	pushd /tmp/ > /dev/null
-	curl -s https://api.github.com/repos/chmln/sd/releases/latest \
-	| jq -r '.assets[] | select(.name | contains("-x86_64-unknown-linux-gnu")) | .browser_download_url' \
-	| wget -qi -
-	
-	tarball="$(find . -name "sd-*-x86_64-unknown-linux-gnu")"
-	chmod +x $tarball
-	sudo mv $tarball /usr/local/bin/sd
-	popd > /dev/null
+        pushd /tmp/ >/dev/null
+        curl -s https://api.github.com/repos/chmln/sd/releases/latest \
+            | jq -r '.assets[] | select(.name | contains("-x86_64-unknown-linux-gnu")) | .browser_download_url' \
+            | wget -qi -
 
-	location="$(which sd)"
-	version="$(sd --version)"
-	echo "${MARKER}sd binary location: $location and version: $version${NC}"
+        tarball="$(find . -name "sd-*-x86_64-unknown-linux-gnu")"
+        chmod +x $tarball
+        sudo mv $tarball /usr/local/bin/sd
+        popd >/dev/null
+
+        location="$(which sd)"
+        version="$(sd --version)"
+        echo "${MARKER}sd binary location: $location and version: $version${NC}"
     fi
 
     # zsh-syntax-highlighting
     if ! [ -e ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting ]; then
-	git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+        git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
     fi
-    
+
     # zsh-autosuggestions
-    if ! [ -e ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions ] ; then
-	git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+    if ! [ -e ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions ]; then
+        git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
     fi
 
     # fzf
     if ! [ -x "$(command -v fzf)" ]; then
-	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-	~/.fzf/install
+        git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+        ~/.fzf/install
     fi
 
     # procs: https://github.com/dalance/procs
     if ! [ -x "$(command -v procs)" ]; then
-	echo -e "${INFOER}installing procs...${NC}"
+        echo -e "${INFOER}installing procs...${NC}"
 
-    	pushd /tmp/ > /dev/null
-	curl -s https://api.github.com/repos/dalance/procs/releases/latest \
-	| jq -r '.assets[] | select(.name | contains("-x86_64-lnx.zip")) | .browser_download_url' \
-	| wget -qi -
-	
-	tarball="$(find . -name "procs-*-x86_64-lnx.zip")"
-	unzip -p $tarball > procs 
-	chmod +x procs
-	sudo mv procs /usr/local/bin/procs
-	sudo rm $tarball
-	popd > /dev/null
+        pushd /tmp/ >/dev/null
+        curl -s https://api.github.com/repos/dalance/procs/releases/latest \
+            | jq -r '.assets[] | select(.name | contains("-x86_64-lnx.zip")) | .browser_download_url' \
+            | wget -qi -
 
-	location="$(which procs)"
-	version="$(procs --version)"
-	echo "${MARKER}procs binary location: $location and version: $version${NC}"
+        tarball="$(find . -name "procs-*-x86_64-lnx.zip")"
+        unzip -p $tarball >procs
+        chmod +x procs
+        sudo mv procs /usr/local/bin/procs
+        sudo rm $tarball
+        popd >/dev/null
+
+        location="$(which procs)"
+        version="$(procs --version)"
+        echo "${MARKER}procs binary location: $location and version: $version${NC}"
     fi
 
-    # kubectl 
+    # kubectl
     if ! [ -x "$(command -v kubectl)" ]; then
-	echo -e "${INFOER}installing kubectl...${NC}"
+        echo -e "${INFOER}installing kubectl...${NC}"
 
-    	pushd /tmp/ > /dev/null
-	curl -sLO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
-	
-	chmod +x kubectl
-	sudo mv kubectl /usr/local/bin/kubectl
-	popd > /dev/null
+        pushd /tmp/ >/dev/null
+        curl -sLO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
 
-	location="$(which kubectl)"
-	version="$(kubectl version --client)"
-	echo "${MARKER}kubectl binary location: $location and version: $version${NC}"
+        chmod +x kubectl
+        sudo mv kubectl /usr/local/bin/kubectl
+        popd >/dev/null
+
+        location="$(which kubectl)"
+        version="$(kubectl version --client)"
+        echo "${MARKER}kubectl binary location: $location and version: $version${NC}"
     fi
 
-    # minio client 
+    # minio client
     if ! [ -x "$(command -v mc)" ]; then
-	echo -e "${INFOER}installing minio mc...${NC}"
+        echo -e "${INFOER}installing minio mc...${NC}"
 
-    	pushd /tmp/ > /dev/null
-	curl -sLO "https://dl.min.io/client/mc/release/linux-amd64/mc"
-	
-	chmod +x mc
-	sudo mv mc /usr/local/bin/mc
-	popd > /dev/null
+        pushd /tmp/ >/dev/null
+        curl -sLO "https://dl.min.io/client/mc/release/linux-amd64/mc"
 
-	location="$(which mc)"
-	version="$(mc --version)"
-	echo "${MARKER}mc binary location: $location and version: $version${NC}"
+        chmod +x mc
+        sudo mv mc /usr/local/bin/mc
+        popd >/dev/null
+
+        location="$(which mc)"
+        version="$(mc --version)"
+        echo "${MARKER}mc binary location: $location and version: $version${NC}"
     fi
-    
+
     # just ( https://github.com/casey/just  )
     if ! [ -x "$(command -v just)" ]; then
-	echo -e "${INFOER}installing just...${NC}"
+        echo -e "${INFOER}installing just...${NC}"
 
-	pushd /tmp/ > /dev/null
-	curl -s https://api.github.com/repos/casey/just/releases/latest \
-	| jq -r '.assets[] | select(.name | contains("-x86_64-unknown-linux-musl.tar.gz")) | .browser_download_url' \
-	| wget -qi -
-	
-	tarball="$(find . -name "just-*-x86_64-unknown-linux-musl.tar.gz")"
-	folball="just_folder"
-	mkdir $folball && tar -xzf $tarball -C $folball
-	chmod +x $folball/just
-	sudo mv $folball/just /usr/local/bin/just
-	sudo rm -rf $folball
-	sudo rm $tarball
-	popd > /dev/null
+        pushd /tmp/ >/dev/null
+        curl -s https://api.github.com/repos/casey/just/releases/latest \
+            | jq -r '.assets[] | select(.name | contains("-x86_64-unknown-linux-musl.tar.gz")) | .browser_download_url' \
+            | wget -qi -
 
-	location="$(which just)"
-	version="$(just --version)"
-	echo "${MARKER}just binary location: $location and version: $version${NC}"
+        tarball="$(find . -name "just-*-x86_64-unknown-linux-musl.tar.gz")"
+        folball="just_folder"
+        mkdir $folball && tar -xzf $tarball -C $folball
+        chmod +x $folball/just
+        sudo mv $folball/just /usr/local/bin/just
+        sudo rm -rf $folball
+        sudo rm $tarball
+        popd >/dev/null
+
+        location="$(which just)"
+        version="$(just --version)"
+        echo "${MARKER}just binary location: $location and version: $version${NC}"
     fi
 
     # nvim
     if ! [ -f "/usr/local/bin/nvim" ]; then
-	echo -e "${INFOER}installing nvim...${NC}"
+        echo -e "${INFOER}installing nvim...${NC}"
 
-	pushd /tmp/ > /dev/null
-	curl -s https://api.github.com/repos/neovim/neovim/releases/latest \
-	| jq -r '.assets[] | select(.name | contains("nvim.appimage.") | not ) | select(.name | contains("nvim.appimage")) | .browser_download_url' \
-	| wget -qi -
-	
-	chmod +x nvim.appimage
-	sudo mv nvim.appimage /usr/local/bin/nvim
-	popd > /dev/null
+        pushd /tmp/ >/dev/null
+        curl -s https://api.github.com/repos/neovim/neovim/releases/latest \
+            | jq -r '.assets[] | select(.name | contains("nvim.appimage.") | not ) | select(.name | contains("nvim.appimage")) | .browser_download_url' \
+            | wget -qi -
 
-	location="$(which nvim)"
-	version="$(nvim --version)"
-	echo "${MARKER}neovim binary location: $location and version: $version${NC}"
+        chmod +x nvim.appimage
+        sudo mv nvim.appimage /usr/local/bin/nvim
+        popd >/dev/null
+
+        location="$(which nvim)"
+        version="$(nvim --version)"
+        echo "${MARKER}neovim binary location: $location and version: $version${NC}"
     fi
 
     # podman
     if ! [ -x "$(command -v podman)" ]; then
-	echo -e "${INFOER}installing podman...${NC}"
-	
-	if [ -f "" ]; then
-	    # arch linux
-	    sudo pacman --noconfirm -S podman
-	else
-	    # ubuntu
-	    echo "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_${VERSION_ID}/ /" | sudo tee /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list
-	    curl -L https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_${VERSION_ID}/Release.key | sudo apt-key add -
-	    sudo apt-get update
-	    sudo apt-get -y install podman
-	fi
-	
-	# for https://github.com/multiarch/qemu-user-static/
+        echo -e "${INFOER}installing podman...${NC}"
+
+        if [ -f "" ]; then
+            # arch linux
+            sudo pacman --noconfirm -S podman
+        else
+            # ubuntu
+            echo "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_${VERSION_ID}/ /" | sudo tee /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list
+            curl -L https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_${VERSION_ID}/Release.key | sudo apt-key add -
+            sudo apt-get update
+            sudo apt-get -y install podman
+        fi
+
+        # for https://github.com/multiarch/qemu-user-static/
         sudo podman run --rm --privileged multiarch/qemu-user-static --reset -p yes
 
-	location="$(which podman)"
-	version="$(podman --version)"
-	echo "${MARKER}podman binary location: $location and version: $version${NC}"
+        location="$(which podman)"
+        version="$(podman --version)"
+        echo "${MARKER}podman binary location: $location and version: $version${NC}"
     fi
 
     # rust-analyzer
     if ! [ -x "$(command -v rust-analyzer)" ]; then
-	echo -e "${INFOER}installing rust-analyzer...${NC}"
+        echo -e "${INFOER}installing rust-analyzer...${NC}"
 
-	pushd /tmp/ > /dev/null
-	curl -s https://api.github.com/repos/rust-analyzer/rust-analyzer/releases/latest \
-	| jq -r '.assets[] | select(.name | contains("-x86_64-unknown-linux-gnu.gz")) | .browser_download_url' \
-	| wget -qi -
-	
-	gunzip rust-analyzer-x86_64-unknown-linux-gnu.gz
-	mv rust-analyzer-x86_64-unknown-linux-gnu rust-analyzer
-	chmod +x rust-analyzer
-	sudo mv rust-analyzer /usr/local/bin/rust-analyzer
-	popd > /dev/null
+        pushd /tmp/ >/dev/null
+        curl -s https://api.github.com/repos/rust-analyzer/rust-analyzer/releases/latest \
+            | jq -r '.assets[] | select(.name | contains("-x86_64-unknown-linux-gnu.gz")) | .browser_download_url' \
+            | wget -qi -
 
-	location="$(which rust-analyzer)"
-	version="$(rust-analyzer --version)"
-	echo "${MARKER}rust-analyzer binary location: $location and version: $version${NC}"
+        gunzip rust-analyzer-x86_64-unknown-linux-gnu.gz
+        mv rust-analyzer-x86_64-unknown-linux-gnu rust-analyzer
+        chmod +x rust-analyzer
+        sudo mv rust-analyzer /usr/local/bin/rust-analyzer
+        popd >/dev/null
+
+        location="$(which rust-analyzer)"
+        version="$(rust-analyzer --version)"
+        echo "${MARKER}rust-analyzer binary location: $location and version: $version${NC}"
     fi
 
     # shfmt ( https://github.com/z0mbix/vim-shfmt )
     if ! [ -x "$(command -v shfmt)" ]; then
-	echo -e "${INFOER}installing shfmt...${NC}"
+        echo -e "${INFOER}installing shfmt...${NC}"
 
-	pushd /tmp/ > /dev/null
-	curl -s https://api.github.com/repos/mvdan/sh/releases/latest \
-	| jq -r '.assets[] | select(.name | contains("_linux_amd64")) | .browser_download_url' \
-	| wget -qi -
-	
-	mv shfmt_v* shfmt
-	chmod +x shfmt
-	sudo mv shfmt /usr/local/bin/shfmt
-	popd > /dev/null
+        pushd /tmp/ >/dev/null
+        curl -s https://api.github.com/repos/mvdan/sh/releases/latest \
+            | jq -r '.assets[] | select(.name | contains("_linux_amd64")) | .browser_download_url' \
+            | wget -qi -
 
-	location="$(which shfmt)"
-	version="$(shfmt --version)"
-	echo "${MARKER}shfmt binary location: $location and version: $version${NC}"
+        mv shfmt_v* shfmt
+        chmod +x shfmt
+        sudo mv shfmt /usr/local/bin/shfmt
+        popd >/dev/null
+
+        location="$(which shfmt)"
+        version="$(shfmt --version)"
+        echo "${MARKER}shfmt binary location: $location and version: $version${NC}"
     fi
 fi
 
@@ -551,4 +551,3 @@ export PATH="$HOME/.local/bin:$PATH"
 
 # GPG sign into cli
 export GPG_TTY=$(tty)
-

@@ -107,6 +107,7 @@ autocmd FileType proto setlocal ts=2 sts=2 sw=2 expandtab
 autocmd FileType markdown setlocal ts=4 sts=4 sw=4
 autocmd FileType sh setlocal ts=4 sts=4 sw=4 expandtab
 autocmd FileType make setlocal ts=4 sts=4 sw=4 expandtab
+autocmd FileType zsh setlocal ts=4 sts=4 sw=4 expandtab
 " set justfile syntax
 autocmd BufNewFile,BufRead Justfile setf make
 
@@ -215,6 +216,10 @@ let g:vim_markdown_no_default_key_mappings = 1
 
 " json format
 au FileType json autocmd BufWritePost *.json execute '%!python3 -m json.tool' | w
+
+" sh and zsh format
+au FileType sh autocmd BufWritePost *.sh execute '%!shfmt -kp -ci -bn -i 4' | w
+au FileType zsh autocmd BufWritePost *zshrc execute '%!shfmt -kp -ci -bn -i 4' | w
 
 " nvim-lua/completion-nvim
 set completeopt=menuone,noinsert,noselect
