@@ -12,61 +12,61 @@ main() {
     check_architecture
 
     ensure cd $HOME
-    ensure install_zsh
-    ensure install_nerd_font_SauceCodePro
-    ensure install_oh_my_zsh
-    ensure install_powerlevel10k
-    ensure download_scripts
-    ensure deploy_scripts
+    install_zsh
+    install_nerd_font_SauceCodePro
+    install_oh_my_zsh
+    install_powerlevel10k
+    download_scripts
+    deploy_scripts
     ignore cd $HOME
 }
 
 function deploy_scripts() {
-    cd $HOME/tfiles
-    make
-    cd $HOME
+    ensure cd $HOME/tfiles
+    ensure make
+    ensure cd $HOME
 }
 
 function download_scripts() {
-    git clone --depth 1 https://github.com/tommady/tfiles.git $HOME/tfiles
+    ensure git clone --depth 1 https://github.com/tommady/tfiles.git $HOME/tfiles
 }
 
 function install_powerlevel10k() {
-    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+    ensure git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
     # p10k configure <--- run it if you don't like my configuration of p10k
 }
 
 function install_oh_my_zsh() {
-    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    ensure sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 }
 
 function install_nerd_font_SauceCodePro() {
     local _dir="$(mktemp -d)"
     local _file="${_dir}/nerd-fonts"
 
-    git clone --filter=blob:none --sparse git@github.com:ryanoasis/nerd-fonts $_file
-    cd $_file
-    git sparse-checkout add patched-fonts/SauceCodePro
-    ./install.sh SauceCodePro
+    ensure git clone --filter=blob:none --sparse git@github.com:ryanoasis/nerd-fonts $_file
+    ensure cd $_file
+    ensure git sparse-checkout add patched-fonts/SauceCodePro
+    ensure ./install.sh SauceCodePro
 
     ignore rmdir $_dir
-    cd $HOME
+    ensure cd $HOME
 }
 
 function install_zsh() {
     local _dir="$(mktemp -d)"
     local _file="${_dir}/zsh"
 
-    git clone git://git.code.sf.net/p/zsh/code $_file
-    cd $_file
+    ensure git clone --depth=1 https://git.code.sf.net/p/zsh/code $_file
+    ensure cd $_file
 
-    ./configure --prefix=/usr --sysconfdir=/etc/zsh --enable-etcdir=/etc/zsh
-    make
-    make install
-    chsh -s $(which zsh)
+    ensure ./configure --prefix=/usr --sysconfdir=/etc/zsh --enable-etcdir=/etc/zsh
+    ensure make
+    ensure make install
+    ensure chsh -s $(which zsh)
 
     ignore rmdir $_dir
-    cd $HOME
+    ensure cd $HOME
 }
 
 function check_architecture() {
