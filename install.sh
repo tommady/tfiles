@@ -10,16 +10,21 @@ main() {
     need_cmd make
 
     check_architecture
+
+    ensure cd $HOME
+    ensure install_zsh
     ensure install_nerd_font_SauceCodePro
     ensure install_oh_my_zsh
     ensure install_powerlevel10k
     ensure download_scripts
     ensure deploy_scripts
+    ignore cd $HOME
 }
 
 function deploy_scripts() {
     cd $HOME/tfiles
     make
+    cd $HOME
 }
 
 function download_scripts() {
@@ -35,15 +40,33 @@ function install_oh_my_zsh() {
     sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 }
 
-function install_nerd_font_SauceCodePro {
+function install_nerd_font_SauceCodePro() {
     local _dir="$(mktemp -d)"
     local _file="${_dir}/nerd-fonts"
+
     git clone --filter=blob:none --sparse git@github.com:ryanoasis/nerd-fonts $_file
-    cd "$_file"
+    cd $_file
     git sparse-checkout add patched-fonts/SauceCodePro
     ./install.sh SauceCodePro
 
-    ignore rmdir "$_dir"
+    ignore rmdir $_dir
+    cd $HOME
+}
+
+function install_zsh() {
+    local _dir="$(mktemp -d)"
+    local _file="${_dir}/zsh"
+
+    git clone git://git.code.sf.net/p/zsh/code $_file
+    cd $_file
+
+    ./configure --prefix=/usr --sysconfdir=/etc/zsh --enable-etcdir=/etc/zsh
+    make
+    make install
+    chsh -s $(which zsh)
+
+    ignore rmdir $_dir
+    cd $HOME
 }
 
 function check_architecture() {
