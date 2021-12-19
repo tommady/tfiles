@@ -76,4 +76,4 @@ err() {
     exit 1
 }
 
-main "$@" || exit 1main "$@" || exit 1
+main "$@" || exit 1
