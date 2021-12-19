@@ -339,7 +339,7 @@ require'nvim-treesitter.configs'.setup {
 local saga = require 'lspsaga'
 saga.init_lsp_saga {
   use_saga_diagnostic_sign = true,
-  dianostic_header_icon = '  ',
+  diagnostic_header_icon = '  ',
   code_action_icon = '',
   finder_definition_icon = ' ',
   finder_reference_icon = ' ',
