@@ -66,7 +66,7 @@ set nobackup
 set nowrap
 set undofile
 set undodir=~/.local/share/nvim/site/undodir
-set clipboard=unnamed
+set clipboard=unnamedplus
 set backspace=indent,eol,start
 autocmd InsertEnter * let save_cwd = getcwd() | set autochdir
 autocmd InsertLeave * set noautochdir | execute 'cd' fnameescape(save_cwd)
