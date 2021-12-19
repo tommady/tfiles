@@ -105,8 +105,8 @@ autocmd FileType css setlocal ts=4 sts=4 sw=4 expandtab
 autocmd FileType javascript setlocal ts=4 sts=4 sw=4 expandtab
 autocmd FileType proto setlocal ts=2 sts=2 sw=2 expandtab
 autocmd FileType markdown setlocal ts=4 sts=4 sw=4
-autocmd FileType sh setlocal ts=2 sts=2 sw=2 expandtab
-autocmd FileType make setlocal ts=2 sts=2 sw=2 expandtab
+autocmd FileType sh setlocal ts=4 sts=4 sw=4 expandtab
+autocmd FileType make setlocal ts=4 sts=4 sw=4 expandtab
 " set justfile syntax
 autocmd BufNewFile,BufRead Justfile setf make
 
