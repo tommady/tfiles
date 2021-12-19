@@ -8,6 +8,7 @@ main() {
     need_cmd rmdir
     need_cmd git
     need_cmd make
+    need_cmd autoconf
 
     check_architecture
 
@@ -60,6 +61,7 @@ function install_zsh() {
     ensure git clone --depth=1 https://git.code.sf.net/p/zsh/code $_file
     ensure cd $_file
 
+    ensure autoconf
     ensure ./configure --prefix=/usr --sysconfdir=/etc/zsh --enable-etcdir=/etc/zsh
     ensure make
     ensure make install
