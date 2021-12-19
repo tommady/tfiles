@@ -421,7 +421,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 	echo "${MARKER}mc binary location: $location and version: $version${NC}"
     fi
     
-    # just https://github.com/casey/just 
+    # just ( https://github.com/casey/just  )
     if ! [ -x "$(command -v just)" ]; then
 	echo -e "${INFOER}installing just...${NC}"
 
@@ -466,7 +466,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
     if ! [ -x "$(command -v podman)" ]; then
 	echo -e "${INFOER}installing podman...${NC}"
 	
-	if [ -f "" ] then
+	if [ -f "" ]; then
 	    # arch linux
 	    sudo pacman --noconfirm -S podman
 	else
@@ -503,6 +503,25 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
 	location="$(which rust-analyzer)"
 	version="$(rust-analyzer --version)"
 	echo "${MARKER}rust-analyzer binary location: $location and version: $version${NC}"
+    fi
+
+    # shfmt ( https://github.com/z0mbix/vim-shfmt )
+    if ! [ -x "$(command -v shfmt)" ]; then
+	echo -e "${INFOER}installing shfmt...${NC}"
+
+	pushd /tmp/ > /dev/null
+	curl -s https://api.github.com/repos/mvdan/sh/releases/latest \
+	| jq -r '.assets[] | select(.name | contains("_linux_amd64")) | .browser_download_url' \
+	| wget -qi -
+	
+	mv shfmt_v* shfmt
+	chmod +x shfmt
+	sudo mv shfmt /usr/local/bin/shfmt
+	popd > /dev/null
+
+	location="$(which shfmt)"
+	version="$(shfmt --version)"
+	echo "${MARKER}shfmt binary location: $location and version: $version${NC}"
     fi
 fi
 
