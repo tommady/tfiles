@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -u
+
 main() {
     need_cmd uname
     need_cmd mktemp
