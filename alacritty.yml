@@ -511,8 +511,8 @@ debug:
 #   - AppKeypad
 key_bindings:
   # (Windows/Linux only)
-  - { key: V,        mods: Super, action: Paste            }
-  - { key: C,        mods: Super, action: Copy             }
+  # - { key: V,        mods: Super, action: Paste            }
+  # - { key: C,        mods: Super, action: Copy             }
   #- { key: Insert,   mods: Shift,         action: PasteSelection   }
   #- { key: Key0,     mods: Control,       action: ResetFontSize    }
   #- { key: Equals,   mods: Control,       action: IncreaseFontSize }
@@ -528,8 +528,8 @@ key_bindings:
   #- { key: NumpadSubtract,  mods: Command,         action: DecreaseFontSize }
   #- { key: K,      mods: Command,         action: ClearHistory     }
   #- { key: K,      mods: Command,         chars: "\x0c"            }
-  - { key: V,      mods: Command,         action: Paste            }
-  - { key: C,      mods: Command,         action: Copy             }
+  #- { key: V,      mods: Command,         action: Paste            }
+  #- { key: C,      mods: Command,         action: Copy             }
   #- { key: H,      mods: Command,         action: Hide             }
   #- { key: Q,      mods: Command,         action: Quit             }
   #- { key: W,      mods: Command,         action: Quit             }
