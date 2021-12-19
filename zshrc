@@ -465,11 +465,18 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
     # podman
     if ! [ -x "$(command -v podman)" ]; then
 	echo -e "${INFOER}installing podman...${NC}"
-
-	echo "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_${VERSION_ID}/ /" | sudo tee /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list
-	curl -L https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_${VERSION_ID}/Release.key | sudo apt-key add -
-	sudo apt-get update
-	sudo apt-get -y install podman
+	
+	if [ -f "" ] then
+	    # arch linux
+	    sudo pacman --noconfirm -S podman
+	else
+	    # ubuntu
+	    echo "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_${VERSION_ID}/ /" | sudo tee /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list
+	    curl -L https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_${VERSION_ID}/Release.key | sudo apt-key add -
+	    sudo apt-get update
+	    sudo apt-get -y install podman
+	fi
+	
 	# for https://github.com/multiarch/qemu-user-static/
         sudo podman run --rm --privileged multiarch/qemu-user-static --reset -p yes
 
