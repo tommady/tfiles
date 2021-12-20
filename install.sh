@@ -61,6 +61,7 @@ function install_zsh() {
     ensure git clone --depth=1 https://git.code.sf.net/p/zsh/code $_file
     ensure cd $_file
 
+    ensure git submodule update --init
     ensure autoconf
     ensure ./configure --prefix=/usr --sysconfdir=/etc/zsh --enable-etcdir=/etc/zsh
     ensure make
@@ -72,10 +73,7 @@ function install_zsh() {
 }
 
 function check_architecture() {
-    local _ostype
-    _ostype="$(uname -s)"
-
-    if ![[ "$_ostype" = Linux || "$_ostype" = Darwin ]]; then
+    if [[ "$(uname)" != "Linux" && "$(uname)" != "Darwin" ]]; then
         err "only support Linux or Darwin architectures"
     fi
 }
