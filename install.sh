@@ -6,9 +6,9 @@ main() {
     need_cmd uname
     need_cmd mktemp
     need_cmd rmdir
-    need_cmd git
+    # need_cmd git
     need_cmd make
-    need_cmd autoconf
+    need_cmd bash
 
     check_architecture
 
@@ -55,26 +55,28 @@ function install_nerd_font_SauceCodePro() {
 }
 
 function install_zsh() {
-    local _dir="$(mktemp -d)"
-    local _file="${_dir}/zsh"
+    if [ "$(uname)" == "Darwin" ]; then
+        # make sure you have brew installed
+        bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        brew doctor
+        brew install zsh
+    elif [ -f "/etc/arch-release" ]; then
+        pacman --noconfirm -Syu podman
+    elif ensure grep 'Ubuntu' /etc/lsb-release; then
+        apt update
+        apt upgrade
+        apt install zsh
+    else
+        err "Only support Mac, ArchLinux and Ubuntu"
+    fi
 
-    ensure git clone --depth=1 https://git.code.sf.net/p/zsh/code $_file
-    ensure cd $_file
-
-    ensure git submodule update --init
-    ensure autoconf
-    ensure ./configure --prefix=/usr --sysconfdir=/etc/zsh --enable-etcdir=/etc/zsh
-    ensure make
-    ensure make install
-    ensure chsh -s $(which zsh)
-
-    ignore rmdir $_dir
-    ensure cd $HOME
+    chsh -s $(which zsh)
 }
 
 function check_architecture() {
-    if [[ "$(uname)" != "Linux" && "$(uname)" != "Darwin" ]]; then
-        err "only support Linux or Darwin architectures"
+    local _os="$(uname)"
+    if [[ "${_os}" != "Linux" && "${_os}" != "Darwin" ]]; then
+        err "only support Linux or Darwin OS"
     fi
 }
 
