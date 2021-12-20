@@ -466,7 +466,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
     if ! [ -x "$(command -v podman)" ]; then
         echo -e "${INFOER}installing podman...${NC}"
 
-        if [ -f "" ]; then
+        if [ -f "/etc/arch-release" ]; then
             # arch linux
             sudo pacman --noconfirm -S podman
         else
