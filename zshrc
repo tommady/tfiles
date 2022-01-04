@@ -250,7 +250,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
             | jq -r '.assets[] | select(.name | contains("x86_64-unknown-linux-gnu.tar.gz")) | .browser_download_url' \
             | wget -qi -
 
-        tarball="$(find . -name "bat-*-x86_64-unknown-linux-gnu.tar.gz")"
+        tarball="$(find . -name "bat-*-x86_64-unknown-linux-gnu.tar.gz" 2>&1 | grep -v find:)"
         folball="bat_folder"
         mkdir $folball && tar -xzf $tarball -C $folball --strip-components 1
         chmod +x $folball/bat
@@ -273,7 +273,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
             | jq -r '.assets[] | select(.name | contains("linux-x86_64-musl")) | .browser_download_url' \
             | wget -qi -
 
-        tarball="$(find . -name "exa-linux-x86_64-musl-*")"
+        tarball="$(find . -name "exa-linux-x86_64-musl-*" 2>&1 | grep -v find:)"
         folball="exa_folder"
         mkdir $folball && unzip -qq $tarball -d $folball
         chmod +x $folball/bin/exa
@@ -296,7 +296,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
             | jq -r '.assets[] | select(.name | contains("-x86_64-unknown-linux-gnu.tar.gz")) | .browser_download_url' \
             | wget -qi -
 
-        tarball="$(find . -name "fd-*-x86_64-unknown-linux-gnu.tar.gz")"
+        tarball="$(find . -name "fd-*-x86_64-unknown-linux-gnu.tar.gz" 2>&1 | grep -v find:)"
         folball="fd_folder"
         mkdir $folball && tar -xzf $tarball -C $folball --strip-components 1
         chmod +x $folball/fd
@@ -319,7 +319,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
             | jq -r '.assets[] | select(.name | contains("-x86_64-unknown-linux-musl.tar.gz")) | .browser_download_url' \
             | wget -qi -
 
-        tarball="$(find . -name "ripgrep-*-x86_64-unknown-linux-musl.tar.gz")"
+        tarball="$(find . -name "ripgrep-*-x86_64-unknown-linux-musl.tar.gz" 2>&1 | grep -v find:)"
         folball="rg_folder"
         mkdir $folball && tar -xzf $tarball -C $folball --strip-components 1
         chmod +x $folball/rg
@@ -342,7 +342,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
             | jq -r '.assets[] | select(.name | contains("-x86_64-unknown-linux-gnu")) | .browser_download_url' \
             | wget -qi -
 
-        tarball="$(find . -name "sd-*-x86_64-unknown-linux-gnu")"
+        tarball="$(find . -name "sd-*-x86_64-unknown-linux-gnu" 2>&1 | grep -v find:)"
         chmod +x $tarball
         sudo mv $tarball /usr/local/bin/sd
         popd >/dev/null
@@ -377,7 +377,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
             | jq -r '.assets[] | select(.name | contains("-x86_64-lnx.zip")) | .browser_download_url' \
             | wget -qi -
 
-        tarball="$(find . -name "procs-*-x86_64-lnx.zip")"
+        tarball="$(find . -name "procs-*-x86_64-lnx.zip" 2>&1 | grep -v find:)"
         unzip -p $tarball >procs
         chmod +x procs
         sudo mv procs /usr/local/bin/procs
@@ -430,7 +430,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
             | jq -r '.assets[] | select(.name | contains("-x86_64-unknown-linux-musl.tar.gz")) | .browser_download_url' \
             | wget -qi -
 
-        tarball="$(find . -name "just-*-x86_64-unknown-linux-musl.tar.gz")"
+        tarball="$(find . -name "just-*-x86_64-unknown-linux-musl.tar.gz" 2>&1 | grep -v find:)"
         folball="just_folder"
         mkdir $folball && tar -xzf $tarball -C $folball
         chmod +x $folball/just
