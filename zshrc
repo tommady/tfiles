@@ -230,7 +230,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
             | grep "browser_download_url.*jq-linux64" \
             | cut -d ":" -f 2,3 \
             | tr -d \" \
-            | wget -qi -
+            | wget -qi - 2>&1 | grep -v SSL_INIT
 
         chmod +x jq-linux64
         sudo mv jq-linux64 /usr/local/bin/jq
@@ -248,7 +248,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
         pushd /tmp/ >/dev/null
         curl -s https://api.github.com/repos/sharkdp/bat/releases/latest \
             | jq -r '.assets[] | select(.name | contains("x86_64-unknown-linux-gnu.tar.gz")) | .browser_download_url' \
-            | wget -qi -
+            | wget -qi - 2>&1 | grep -v SSL_INIT
 
         tarball="$(find . -name "bat-*-x86_64-unknown-linux-gnu.tar.gz" 2>&1 | grep -v find:)"
         folball="bat_folder"
@@ -271,7 +271,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
         pushd /tmp/ >/dev/null
         curl -s https://api.github.com/repos/ogham/exa/releases/latest \
             | jq -r '.assets[] | select(.name | contains("linux-x86_64-musl")) | .browser_download_url' \
-            | wget -qi -
+            | wget -qi - 2>&1 | grep -v SSL_INIT
 
         tarball="$(find . -name "exa-linux-x86_64-musl-*" 2>&1 | grep -v find:)"
         folball="exa_folder"
@@ -294,7 +294,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
         pushd /tmp/ >/dev/null
         curl -s https://api.github.com/repos/sharkdp/fd/releases/latest \
             | jq -r '.assets[] | select(.name | contains("-x86_64-unknown-linux-gnu.tar.gz")) | .browser_download_url' \
-            | wget -qi -
+            | wget -qi - 2>&1 | grep -v SSL_INIT
 
         tarball="$(find . -name "fd-*-x86_64-unknown-linux-gnu.tar.gz" 2>&1 | grep -v find:)"
         folball="fd_folder"
@@ -317,7 +317,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
         pushd /tmp/ >/dev/null
         curl -s https://api.github.com/repos/BurntSushi/ripgrep/releases/latest \
             | jq -r '.assets[] | select(.name | contains("-x86_64-unknown-linux-musl.tar.gz")) | .browser_download_url' \
-            | wget -qi -
+            | wget -qi - 2>&1 | grep -v SSL_INIT
 
         tarball="$(find . -name "ripgrep-*-x86_64-unknown-linux-musl.tar.gz" 2>&1 | grep -v find:)"
         folball="rg_folder"
@@ -340,7 +340,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
         pushd /tmp/ >/dev/null
         curl -s https://api.github.com/repos/chmln/sd/releases/latest \
             | jq -r '.assets[] | select(.name | contains("-x86_64-unknown-linux-gnu")) | .browser_download_url' \
-            | wget -qi -
+            | wget -qi - 2>&1 | grep -v SSL_INIT
 
         tarball="$(find . -name "sd-*-x86_64-unknown-linux-gnu" 2>&1 | grep -v find:)"
         chmod +x $tarball
@@ -375,7 +375,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
         pushd /tmp/ >/dev/null
         curl -s https://api.github.com/repos/dalance/procs/releases/latest \
             | jq -r '.assets[] | select(.name | contains("-x86_64-lnx.zip")) | .browser_download_url' \
-            | wget -qi -
+            | wget -qi - 2>&1 | grep -v SSL_INIT
 
         tarball="$(find . -name "procs-*-x86_64-lnx.zip" 2>&1 | grep -v find:)"
         unzip -p $tarball >procs
@@ -428,7 +428,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
         pushd /tmp/ >/dev/null
         curl -s https://api.github.com/repos/casey/just/releases/latest \
             | jq -r '.assets[] | select(.name | contains("-x86_64-unknown-linux-musl.tar.gz")) | .browser_download_url' \
-            | wget -qi -
+            | wget -qi - 2>&1 | grep -v SSL_INIT
 
         tarball="$(find . -name "just-*-x86_64-unknown-linux-musl.tar.gz" 2>&1 | grep -v find:)"
         folball="just_folder"
@@ -451,7 +451,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
         pushd /tmp/ >/dev/null
         curl -s https://api.github.com/repos/neovim/neovim/releases/latest \
             | jq -r '.assets[] | select(.name | contains("nvim.appimage.") | not ) | select(.name | contains("nvim.appimage")) | .browser_download_url' \
-            | wget -qi -
+            | wget -qi - 2>&1 | grep -v SSL_INIT
 
         chmod +x nvim.appimage
         sudo mv nvim.appimage /usr/local/bin/nvim
@@ -492,7 +492,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
         pushd /tmp/ >/dev/null
         curl -s https://api.github.com/repos/rust-analyzer/rust-analyzer/releases/latest \
             | jq -r '.assets[] | select(.name | contains("-x86_64-unknown-linux-gnu.gz")) | .browser_download_url' \
-            | wget -qi -
+            | wget -qi - 2>&1 | grep -v SSL_INIT
 
         gunzip rust-analyzer-x86_64-unknown-linux-gnu.gz
         mv rust-analyzer-x86_64-unknown-linux-gnu rust-analyzer
@@ -512,7 +512,7 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
         pushd /tmp/ >/dev/null
         curl -s https://api.github.com/repos/mvdan/sh/releases/latest \
             | jq -r '.assets[] | select(.name | contains("_linux_amd64")) | .browser_download_url' \
-            | wget -qi -
+            | wget -qi - 2>&1 | grep -v SSL_INIT
 
         mv shfmt_v* shfmt
         chmod +x shfmt
