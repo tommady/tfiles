@@ -523,6 +523,30 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
         version="$(shfmt --version)"
         echo "${MARKER}shfmt binary location: $location and version: $version${NC}"
     fi
+
+    # ncspot, my favorite spotify terminal client ( https://github.com/hrkfdn/ncspot )
+    if ! [ -x "$(command -v ncspot)" ]; then
+        echo -e "${INFOER}installing ncspot...${NC}"
+
+        pushd /tmp/ >/dev/null
+        curl -s https://api.github.com/repos/hrkfdn/ncspot/releases/latest \
+            | jq -r '.assets[] | select(.name | contains("linux-x86_64.tar.gz")) | .browser_download_url' \
+            | wget -qi - 2>&1 | grep -v SSL_INIT
+
+        tarball="$(find . -name "ncspot-*-linux-x86_64.tar.gz" 2>&1 | grep -v find:)"
+        folball="ncspot_folder"
+
+        mkdir $folball && tar -xzf $tarball -C $folball
+        chmod +x $folball/ncspot
+        sudo mv $folball/ncspot /usr/local/bin/ncspot
+        sudo rm $tarball
+        sudo rm -rf $folball
+        popd >/dev/null
+
+        location="$(which ncspot)"
+        version="$(ncspot --version)"
+        echo -e "${MARKER}ncspot binary location: $location and version: $version${NC}"
+    fi
 fi
 
 # fzf zsh config
