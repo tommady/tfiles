@@ -141,12 +141,6 @@ if [[ "$(uname)" == "Darwin" ]]; then
     fi
 fi
 
-# rust
-if ! [ -x "$(command -v rustup)" ]; then
-    curl https://sh.rustup.rs -sSf | sh
-    rustup component add rls-preview rust-analysis rust-src --toolchain stable
-fi
-
 if [[ "$(uname)" == "Darwin" ]]; then
     # bat a better cat
     if ! [ -x "$(command -v bat)" ]; then
@@ -199,11 +193,6 @@ if [[ "$(uname)" == "Darwin" ]]; then
         brew install zsh-autosuggestions
     fi
     source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-
-    # ctags
-    if ! [ -x "$(command -v ctags)" ]; then
-        brew install --HEAD universal-ctags/universal-ctags/universal-ctags
-    fi
 
     if ! [ -e $ZSH_CUSTOM/themes/powerlevel10k ]; then
         git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
