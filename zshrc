@@ -563,6 +563,9 @@ alias ear="exa --recurse"
 alias ea="exa"
 alias asciirec="asciinema rec"
 alias nv="nvim"
+alias nv="nvim"
+alias k=kubectl
+compdef __start_kubectl k
 
 # rust cargo export
 export PATH="$HOME/.cargo/bin:$PATH"
