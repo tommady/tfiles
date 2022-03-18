@@ -1,5 +1,7 @@
 " auto highlight current word under cursor
-set updatetime=10 " Short updatetime so the CursorHold event fires fairly often
+" Set updatetime for CursorHold
+" Short updatetime so the CursorHold event fires fairly often 
+set updatetime=300
 function! HighlightWordUnderCursor()
   if getline(".")[col(".")-1] !~# '[[:punct:][:blank:]]'
     exec 'match' 'Search' '/\V\<'.expand('<cword>').'\>/'
@@ -79,6 +81,7 @@ set exrc
 set secure
 set autoread
 set rtp+=~/.fzf
+" Avoid showing extra messages when using completion
 set shortmess+=c
 
 " Save whenever switching windows or leaving vim. This is useful when running
@@ -117,7 +120,6 @@ filetype plugin indent on
 Plug 'tpope/vim-sensible'
 Plug 'hashivim/vim-terraform'
 Plug 'andrewstuart/vim-kubernetes'
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries', 'for': 'go' }
 Plug 'jiangmiao/auto-pairs'
 " rust lang
 Plug 'rust-lang/rust.vim'
@@ -128,7 +130,7 @@ Plug 'plasticboy/vim-markdown'
 " vim-one theme
 Plug 'rakr/vim-one'
 " multi cursor ctrl d
-Plug 'terryma/vim-multiple-cursors'
+Plug 'mg979/vim-visual-multi'
 " toml syntax
 Plug 'cespare/vim-toml'
 " git in nvim https://github.com/tpope/vim-fugitive/blob/master/doc/fugitive.txt
@@ -139,9 +141,26 @@ Plug 'tami5/lspsaga.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'hoob3rt/lualine.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
-Plug 'ryanoasis/vim-devicons'
 Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-telescope/telescope.nvim'
+" Golang plugin like vim-go
+Plug 'ray-x/go.nvim'
+" Adds extra functionality over rust analyzer
+Plug 'simrat39/rust-tools.nvim'
+" Autocompletion framework
+Plug 'hrsh7th/nvim-cmp'
+" cmp LSP completion
+Plug 'hrsh7th/cmp-nvim-lsp'
+" cmp Snippet completion
+Plug 'hrsh7th/cmp-vsnip'
+" cmp Path completion
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-buffer'
+" Snippet engine
+Plug 'hrsh7th/vim-vsnip'
+" tab in nvim
+Plug 'akinsho/bufferline.nvim'
 
 call plug#end()
 
@@ -170,35 +189,9 @@ set updatetime=100
 let g:gitgutter_max_signs = 500
 let g:gitgutter_map_keys = 0
 let g:gitgutter_override_sign_column_highlight = 0
+" have a fixed column for the diagnostics to appear in
+" this removes the jitter when warnings/errors flow in
 set signcolumn=yes
-
-" vim-go config
-let g:go_fmt_command = "goimports"
-let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck', 'varcheck', 'deadcode', 'staticcheck', 'unused']
-let g:syntastic_go_checkers = ['golangci_lint', 'golint', 'govet', 'errcheck']
-let g:go_highlight_types = 1
-let g:go_highlight_fields = 1
-let g:go_highlight_functions = 1
-let g:go_highlight_function_calls = 1
-let g:go_highlight_operators = 1
-let g:go_highlight_extra_types = 1
-let g:go_highlight_build_constraints = 1
-let g:go_highlight_generate_tags = 1
-let g:go_highlight_structs = 1 
-let g:go_highlight_methods = 1
-let g:go_highlight_build_constraints = 1
-let g:go_gocode_propose_source = 0
-let g:go_template_autocreate = 0
-let g:go_def_mode='gopls'
-let g:go_referrers_mode='gopls'
-let g:go_info_mode='gopls'
-let g:go_def_mapping_enabled = 1
-let g:go_fmt_fail_silently = 1
-let g:go_term_enabled = 1
-let g:go_gopls_deep_completion = v:false
-let g:go_gopls_temp_modfile = 1
-let g:go_gopls_use_placeholders = 1
-let g:go_addtags_transform = 'camelcase'
 
 " rust config
 let g:rustfmt_autosave = 1
@@ -221,10 +214,27 @@ au FileType json autocmd BufWritePost *.json execute '%!python3 -m json.tool' | 
 au FileType sh autocmd BufWritePost *.sh execute '%!shfmt -kp -ci -bn -i 4' | w
 au FileType zsh autocmd BufWritePost *zshrc execute '%!shfmt -kp -ci -bn -i 4' | w
 
-" nvim-lua/completion-nvim
+" Set completeopt to have a better completion experience
+" :help completeopt
+" menuone: popup even when there's only one match
+" noinsert: Do not insert text until a selection is made
+" noselect: Do not select, force user to select one from the menu
 set completeopt=menuone,noinsert,noselect
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+" bufferline key mapping
+nnoremap <silent> <S-l> <cmd>BufferLineCycleNext<cr>
+nnoremap <silent> <S-h> <cmd>BufferLineCyclePrev<cr>
+nnoremap <silent> <S-e> <cmd>BufferLinePick<cr>
+nnoremap <silent> <S-w> <cmd>BufferLinePickClose<cr>
+nnoremap <silent> <leader>1 <cmd>BufferLineGoToBuffer 1<cr>
+nnoremap <silent> <leader>2 <cmd>BufferLineGoToBuffer 2<cr>
+nnoremap <silent> <leader>3 <cmd>BufferLineGoToBuffer 3<cr>
+nnoremap <silent> <leader>4 <cmd>BufferLineGoToBuffer 4<cr>
+nnoremap <silent> <leader>5 <cmd>BufferLineGoToBuffer 5<cr>
+nnoremap <silent> <leader>6 <cmd>BufferLineGoToBuffer 6<cr>
+nnoremap <silent> <leader>7 <cmd>BufferLineGoToBuffer 7<cr>
+nnoremap <silent> <leader>8 <cmd>BufferLineGoToBuffer 8<cr>
+nnoremap <silent> <leader>9 <cmd>BufferLineGoToBuffer 9<cr>
 
 " lspsaga settings
 " nnoremap <silent> <C-i> <cmd>Lspsaga hover_doc<cr>
@@ -237,7 +247,7 @@ nnoremap <silent> <C-r> <cmd>Telescope live_grep<cr>
 " nvim 5.0 lua settings
 lua << EOF
 local nvim_lsp = require('lspconfig')
-local protocol = require'vim.lsp.protocol'
+local protocol = require('vim.lsp.protocol')
 
 local on_attach = function(client, bufnr)
   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
@@ -249,6 +259,7 @@ local on_attach = function(client, bufnr)
   local opts = { noremap=true, silent=true }
   buf_set_keymap('n', '<C-i>', '<cmd>lua vim.lsp.buf.hover()<cr>', opts) 
   buf_set_keymap('n', '<C-]>', '<cmd>lua vim.lsp.buf.definition()<cr>', opts)
+  buf_set_keymap('n', '<ga>', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
 
   protocol.CompletionItemKind = {
     '', -- Text
@@ -279,19 +290,118 @@ local on_attach = function(client, bufnr)
   }
 end
 
-local servers = { 
-  "rls", -- can use rustup rust_analyzer instead
-  "gopls",
-}
+-- rust settings
+-- https://github.com/sharksforarms/neovim-rust/blob/master/neovim-init-lsp-cmp-rust-tools.vim
+require("rust-tools").setup({
+  tools = {
+    autoSetHints = true,
+    hover_with_actions = true,
+    runnables = {
+        use_telescope = true
+    },
+    inlay_hints = {
+        show_parameter_hints = false,
+        parameter_hints_prefix = "⇠ ",
+        other_hints_prefix = "⇢ ",
+    },
+  },
 
-for _, lsp in ipairs(servers) do
-  nvim_lsp[lsp].setup { 
-    on_attach = on_attach,
-    flags = {
-      debounce_text_changes = 150,
-    }
-  }
-end
+    -- all the opts to send to nvim-lspconfig
+    -- these override the defaults set by rust-tools.nvim
+    -- see https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#rust_analyzer 
+    server = {
+      -- on_attach is a callback called when the language server attachs to the buffer
+      on_attach = on_attach,
+      settings = {
+        -- to enable rust-analyzer settings visit:
+        -- https://github.com/rust-analyzer/rust-analyzer/blob/master/docs/user/generated_config.adoc
+        ["rust-analyzer"] = {
+          -- enable clippy on save
+          checkOnSave = {
+            command = "clippy"
+          },
+        }
+      }
+    }, 
+})
+
+-- https://github.com/ray-x/go.nvim
+require('go').setup({
+  go='go', -- go command, can be go[default] or go1.18beta1
+  goimport='gopls', -- goimport command, can be gopls[default] or goimport
+  fillstruct = 'gopls', -- can be nil (use fillstruct, slower) and gopls
+  gofmt = 'gofumpt', --gofmt cmd,
+  max_line_len = 120, -- max line length in goline format
+  tag_transform = false, -- tag_transfer  check gomodifytags for details
+  test_template = '', -- g:go_nvim_tests_template  check gotests for details
+  test_template_dir = '', -- default to nil if not set; g:go_nvim_tests_template_dir  check gotests for details
+  comment_placeholder = '' ,  -- comment_placeholder your cool placeholder e.g. ﳑ       
+  icons = {breakpoint = '🧘', currentpos = '🏃'},
+  verbose = false,  -- output loginf in messages
+  lsp_cfg = true, -- true: use non-default gopls setup specified in go/lsp.lua
+                   -- false: do nothing
+                   -- if lsp_cfg is a table, merge table with with non-default gopls setup in go/lsp.lua, e.g.
+                   --   lsp_cfg = {settings={gopls={matcher='CaseInsensitive', ['local'] = 'your_local_module_path', gofumpt = true }}}
+  lsp_gofumpt = true, -- true: set default gofmt in gopls format to gofumpt
+  lsp_on_attach = on_attach, -- nil: use on_attach function defined in go/lsp.lua,
+                       --      when lsp_cfg is true
+                       -- if lsp_on_attach is a function: use this function as on_attach function for gopls
+  lsp_codelens = false, -- set to false to disable codelens, true by default
+  lsp_diag_hdlr = true, -- hook lsp diag handler
+  -- virtual text setup
+  lsp_diag_virtual_text = { space = 0, prefix = "" },
+  lsp_diag_signs = true,
+  lsp_diag_update_in_insert = false,
+  lsp_document_formatting = true,
+  -- set to true: use gopls to format
+  -- false if you want to use other formatter tool(e.g. efm, nulls)
+  gopls_cmd = nil, -- if you need to specify gopls path and cmd, e.g {"/home/user/lsp/gopls", "-logfile","/var/log/gopls.log" }
+  gopls_remote_auto = true, -- add -remote=auto to gopls
+  dap_debug = false, -- set to false to disable dap
+  dap_debug_keymap = false, -- true: use keymap for debugger defined in go/dap.lua
+                           -- false: do not use keymap in go/dap.lua.  you must define your own.
+  dap_debug_gui = fasle, -- set to true to enable dap gui, highly recommand
+  dap_debug_vt = false, -- set to true to enable dap virtual text
+  build_tags = "tag1,tag2", -- set default build tags
+  textobjects = true, -- enable default text jobects through treesittter-text-objects
+  test_runner = 'go', -- richgo, go test, richgo, dlv, ginkgo
+  run_in_floaterm = false, -- set to true to run in float window.
+                           --float term recommand if you use richgo/ginkgo with terminal color
+})
+
+-- Setup Completion
+local cmp = require("cmp")
+cmp.setup({
+  snippet = {
+    expand = function(args)
+        vim.fn["vsnip#anonymous"](args.body)
+    end,
+  },
+  mapping = {
+    -- Add tab support
+    ['<S-Tab>'] = cmp.mapping.select_prev_item(),
+    ['<Tab>'] = cmp.mapping.select_next_item(),
+    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.close(),
+    ['<CR>'] = cmp.mapping.confirm({
+      behavior = cmp.ConfirmBehavior.Insert,
+      select = true,
+    })
+  },
+
+  -- Installed sources
+  sources = {
+    { name = 'nvim_lsp' },
+    { name = 'vsnip' },
+    { name = 'path' },
+    { name = 'buffer' },
+  },
+})
+
+-- Setup bufferline
+require("bufferline").setup({})
 
 local status, lualine = pcall(require, "lualine")
 if (not status) then return end
@@ -356,19 +466,3 @@ saga.init_lsp_saga {
   border_style = "single",
 }
 EOF
-
-" for monorepo golang memo
-"
-" local nvim_lsp = require('lspconfig')
-" local root_pattern = nvim_lsp.util.root_pattern(".git", "go.mod")
-" 
-" -- try not to use gopls on gophers/go
-" function root_dir(fname)
-"   local root = fname:match ".*/gophers/go/.-/"
-"   return root ~= nil and root or root_pattern(fname) 
-" end
-" 
-" nvim_lsp['gopls'].setup {
-"   root_dir = root_dir,
-"   ...
-" }
