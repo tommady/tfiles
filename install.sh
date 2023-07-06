@@ -14,7 +14,7 @@ main() {
 
     ensure cd $HOME
     install_zsh
-    install_nerd_font_SauceCodePro
+    # install_nerd_font_SauceCodePro
     install_oh_my_zsh
     install_powerlevel10k
     download_scripts
