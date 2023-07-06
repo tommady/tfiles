@@ -61,7 +61,7 @@ function install_zsh() {
         brew doctor
         brew install zsh
     elif [ -f "/etc/arch-release" ]; then
-        pacman --noconfirm -Syu podman
+        pacman --noconfirm -Syu zsh
     elif ensure grep 'Ubuntu' /etc/lsb-release; then
         apt update
         apt upgrade
