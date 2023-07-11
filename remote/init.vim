@@ -221,6 +221,10 @@ au FileType zsh autocmd BufWritePost *zshrc execute '%!shfmt -kp -ci -bn -i 4' |
 " noselect: Do not select, force user to select one from the menu
 set completeopt=menuone,noinsert,noselect
 
+" lsp key mapping
+nnoremap <silent> I <cmd>lua vim.lsp.buf.hover()<cr>
+nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<cr>
+
 " bufferline key mapping
 nnoremap <silent> <S-l> <cmd>BufferLineCycleNext<cr>
 nnoremap <silent> <S-h> <cmd>BufferLineCyclePrev<cr>
@@ -255,11 +259,6 @@ local on_attach = function(client, bufnr)
 
   -- Enable completion triggered by <c-x><c-o>
   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-  local opts = { noremap=true, silent=true }
-  buf_set_keymap('n', '<C-i>', '<cmd>lua vim.lsp.buf.hover()<cr>', opts) 
-  buf_set_keymap('n', '<C-]>', '<cmd>lua vim.lsp.buf.definition()<cr>', opts)
-  buf_set_keymap('n', '<ga>', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
 
   protocol.CompletionItemKind = {
     '', -- Text
@@ -482,4 +481,24 @@ saga.init_lsp_saga {
   definition_preview_icon = ' ',
   border_style = "single",
 }
+
+-- github theme setup
+require("github-theme").setup({
+  theme_style = "dark",
+  function_style = "italic",
+  sidebars = {"qf", "vista_kind", "terminal", "packer"},
+
+  -- Change the "hint" color to the "orange" color, and make the "error" color bright red
+  colors = {hint = "orange", error = "#ff0000"},
+
+  -- Overwrite the highlight groups
+  overrides = function(c)
+    return {
+      htmlTag = {fg = c.red, bg = "#282c34", sp = c.hint, style = "underline"},
+      DiagnosticHint = {link = "LspDiagnosticsDefaultHint"},
+      -- this will remove the highlight groups
+      TSField = {},
+    }
+  end
+})
 EOF
