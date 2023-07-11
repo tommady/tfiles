@@ -295,7 +295,6 @@ end
 require("rust-tools").setup({
   tools = {
     autoSetHints = true,
-    hover_with_actions = true,
     runnables = {
         use_telescope = true
     },
@@ -323,6 +322,24 @@ require("rust-tools").setup({
         }
       }
     }, 
+})
+
+local format_sync_grp = vim.api.nvim_create_augroup("GoImport", {})
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*.go",
+  callback = function()
+   require('go.format').goimport()
+  end,
+  group = format_sync_grp,
+})
+
+local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
+require('go').setup({
+  -- other setups ....
+  lsp_cfg = {
+    capabilities = capabilities,
+    -- other setups
+  },
 })
 
 -- https://github.com/ray-x/go.nvim
@@ -362,7 +379,7 @@ require('go').setup({
                            -- false: do not use keymap in go/dap.lua.  you must define your own.
   dap_debug_gui = fasle, -- set to true to enable dap gui, highly recommand
   dap_debug_vt = false, -- set to true to enable dap virtual text
-  build_tags = "tag1,tag2", -- set default build tags
+  build_tags = "integration,e2e", -- set default build tags
   textobjects = true, -- enable default text jobects through treesittter-text-objects
   test_runner = 'go', -- richgo, go test, richgo, dlv, ginkgo
   run_in_floaterm = false, -- set to true to run in float window.
