@@ -18,13 +18,12 @@ RUN git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUS
 # install zsh-autosuggestions
 RUN git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 
-# copy my dotfiles
-RUN git clone --depth 1 https://github.com/tommady/tfiles.git $HOME/tfiles
 
-RUN cp $HOME/tfiles/remote/tmux.conf $HOME/.tmux.conf
-RUN mkdir -p $HOME/.config/nvim && cp $HOME/tfiles/remote/init.vim $HOME/.config/nvim/init.vim
-RUN cp $HOME/tfiles/remote/zshrc $HOME/.zshrc
-RUN cp $HOME/tfiles/remote/p10k.zsh $HOME/.p10k.zsh
+RUN mkdir -p $HOME/.config/nvim 
+COPY ./init.vim $HOME/.config/nvim/init.vim
+COPY ./tmux.conf $HOME/.tmux.conf
+COPY ./zshrc $HOME/.zshrc
+COPY ./p10k.zsh $HOME/.p10k.zsh
 
 # fix up LC_ALL: cannot change locale (en_US.UTF-8)
 RUN echo "LC_ALL=en_US.UTF-8" >> /etc/environment
