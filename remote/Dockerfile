@@ -27,7 +27,7 @@ RUN cp $HOME/tfiles/remote/zshrc $HOME/.zshrc
 RUN cp $HOME/tfiles/remote/p10k.zsh $HOME/.p10k.zsh
 
 # fix up LC_ALL: cannot change locale (en_US.UTF-8)
-RUN "LC_ALL=en_US.UTF-8" >> /etc/environment
+RUN echo "LC_ALL=en_US.UTF-8" >> /etc/environment
 RUN echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
 RUN echo "LANG=en_US.UTF-8" > /etc/locale.conf
 RUN locale-gen en_US.UTF-8
