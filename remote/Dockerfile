@@ -1,7 +1,7 @@
 FROM docker.io/archlinux:base-devel
 
 # install the binaries
-RUN pacman -Syu --noconfirm git zsh exa ripgrep fd neovim bat jq sd fzf just wget tmux gopls gofumpt go
+RUN pacman -Syu --noconfirm git zsh exa ripgrep fd neovim bat jq sd fzf just wget tmux gopls gofumpt go shfmt protobuf
 
 # install tmux tpm
 RUN git clone --depth 1 https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
@@ -35,5 +35,9 @@ RUN locale-gen en_US.UTF-8
 
 # setup default shell to zsh
 RUN chsh -s /bin/zsh
+
+# preinstall neovim plugins
+RUN nvim +PlugInstall +qall +slient
+RUN nvim +PlugUpdate +qall +slient
 
 ENTRYPOINT ["sleep", "infinity"] 
