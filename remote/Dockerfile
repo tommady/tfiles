@@ -18,6 +18,9 @@ RUN git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUS
 # install zsh-autosuggestions
 RUN git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 
+# install golangci-lint
+RUN curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.53.3
+
 WORKDIR /setup 
 COPY . .
 
@@ -39,5 +42,11 @@ RUN chsh -s /bin/zsh
 # preinstall neovim plugins
 RUN nvim +PlugInstall +qall +slient
 RUN nvim +PlugUpdate +qall +slient
+
+# preinstall nvim TS
+RUN nvim -c "TSInstall all" +qall +slient
+
+# for windows setup
+RUN git config --global core.autocrlf true
 
 ENTRYPOINT ["sleep", "infinity"] 
