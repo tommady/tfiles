@@ -1,7 +1,7 @@
 FROM docker.io/archlinux:base-devel
 
 # install the binaries
-RUN pacman -Syu --noconfirm git zsh exa ripgrep fd neovim bat jq sd fzf just wget tmux gopls gofumpt go shfmt protobuf
+RUN pacman -Syu --noconfirm git zsh exa ripgrep fd neovim bat jq sd fzf just wget tmux gopls gofumpt go shfmt protobuf python python-pip
 
 # install tmux tpm
 RUN git clone --depth 1 https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
@@ -20,6 +20,8 @@ RUN git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.
 
 # install golangci-lint
 RUN curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.53.3
+
+RUN pip install --break-system-package requests mysql-connector-python mycli
 
 WORKDIR /setup 
 COPY . .
