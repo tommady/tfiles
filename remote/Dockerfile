@@ -38,17 +38,20 @@ RUN echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
 RUN echo "LANG=en_US.UTF-8" > /etc/locale.conf
 RUN locale-gen en_US.UTF-8
 
-# setup default shell to zsh
-RUN chsh -s /bin/zsh
-
 # preinstall neovim plugins
-RUN nvim +PlugInstall +qall +slient
-RUN nvim +PlugUpdate +qall +slient
+RUN nvim --headless +PlugInstall +qall +slient
 
 # preinstall nvim TS
-RUN nvim -c "TSInstall all" +qall +slient
+RUN nvim --headless -c 'TSUpdateSync' -c 'sleep 30' -c 'qa'
+# RUN nvim -c "TSInstall all" +qall +slient
+
+# preinstall golang tools
+RUN nvim --headless -c "GoInstallBinaries"  -c 'sleep 20' -c 'qa'
 
 # for windows setup
 RUN git config --global core.autocrlf true
+
+# setup default shell to zsh
+RUN chsh -s /bin/zsh
 
 ENTRYPOINT ["sleep", "infinity"] 
